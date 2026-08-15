@@ -1,7 +1,23 @@
+from datetime import datetime
+
+import asyncpg
 from sqlalchemy import make_url
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from app.core.config import settings
+
+
+def _register_asyncpg_timestamptz_codec() -> None:
+    """Postgres returns timezone-aware TIMESTAMPTZ values, but the app compares
+    them against naive datetime.utcnow() (which works on SQLite). Decode
+    timestamptz as naive UTC so both backends behave identically."""
+    asyncpg.set_type_codec(
+        "timestamptz",
+        encoder=lambda v: v.isoformat() if isinstance(v, datetime) else v,
+        decoder=lambda s: datetime.fromisoformat(s.replace("Z", "+00:00")).replace(tzinfo=None),
+        format="text",
+    )
+
 
 connect_args = {}
 db_url = settings.DATABASE_URL
@@ -17,6 +33,8 @@ else:
         query = {k: v for k, v in parsed.query.items() if k != "sslmode"}
         db_url = parsed.set(query=query).render_as_string(hide_password=False)
         connect_args["ssl"] = "require"
+    connect_args["server_settings"] = {"timezone": "utc"}
+    _register_asyncpg_timestamptz_codec()
 
 engine = create_async_engine(
     db_url,
