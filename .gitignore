@@ -1,0 +1,51 @@
+# ---- Environment & secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Databases ----
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ---- Runtime artifacts ----
+backend/uploads/*
+!backend/uploads/.gitkeep
+uvicorn.log
+uvicorn.err.log
+uvicorn.pid
+uploads/
+logs/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#26201c"/>
+      <stop offset="100%" stop-color="#0e0b09"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5d67a"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#b8932a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <circle cx="400" cy="380" r="210" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+  <g transform="translate(400,360)">
+    <path d="M 0 -180 C -40 -180 -70 -160 -90 -120 C -120 -130 -150 -110 -160 -80 C -120 -70 -80 -90 -60 -60 C -40 -30 -20 40 0 110 C 20 40 40 -30 60 -60 C 80 -90 120 -70 160 -80 C 150 -110 120 -130 90 -120 C 70 -160 40 -180 0 -180 Z" fill="none" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
+    <circle cx="0" cy="-40" r="34" fill="url(#gold)"/>
+    <circle cx="0" cy="-40" r="14" fill="#1a1a1e"/>
+  </g>
+  <text x="400" y="700" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#f5f5f4" text-anchor="middle" letter-spacing="4">GOLD NECKLACE</text>
+</svg>

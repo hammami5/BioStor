@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#25272b"/>
+      <stop offset="100%" stop-color="#0d0e10"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5d67a"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#b8932a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <circle cx="400" cy="380" r="210" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+  <g transform="translate(400,340)">
+    <rect x="-120" y="-40" width="240" height="160" rx="12" fill="#1a1a1e" stroke="url(#gold)" stroke-width="9"/>
+    <path d="M -120 -40 L -80 -130 L 80 -130 L 120 -40 Z" fill="none" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M -40 -130 L 40 -130 L 20 -40 L -20 -40 Z" fill="#26221c" stroke="url(#gold)" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="0" cy="120" r="18" fill="url(#gold)"/>
+    <circle cx="-70" cy="120" r="10" fill="#d4af37" opacity="0.6"/>
+    <circle cx="70" cy="120" r="10" fill="#b8932a" opacity="0.6"/>
+  </g>
+  <text x="400" y="710" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#f5f5f4" text-anchor="middle" letter-spacing="4">WOOL BLAZER</text>
+</svg>

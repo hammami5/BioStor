@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#28212b"/>
+      <stop offset="100%" stop-color="#100c12"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5d67a"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#b8932a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <circle cx="400" cy="380" r="210" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+  <g transform="translate(400,350)">
+    <path d="M -170 -20 C -120 -100 -50 -140 0 -150 C 50 -140 120 -100 170 -20 L 150 120 C 120 150 90 160 70 160 L -70 160 C -90 160 -120 150 -150 120 Z" fill="none" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M -170 -20 C -40 10 40 10 170 -20" fill="none" stroke="url(#gold)" stroke-width="9"/>
+    <rect x="-60" y="-70" width="120" height="22" rx="11" fill="url(#gold)"/>
+    <rect x="-40" y="60" width="80" height="60" rx="8" fill="none" stroke="url(#gold)" stroke-width="7"/>
+  </g>
+  <text x="400" y="710" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#f5f5f4" text-anchor="middle" letter-spacing="4">ROSE QUARTZ ROLLER</text>
+</svg>
