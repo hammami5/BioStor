@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Store, ShoppingBag, Instagram, Search } from 'lucide-react';
 import type { PublicProduct, Store as StoreModel, Category } from '@/types';
 import { accentText, isLightColor } from './utils';
+import { resolveImageUrl } from '@/lib/utils';
 import { ProductCard } from './ProductCard';
 import { CartButton } from './CartDrawer';
 
@@ -51,7 +52,7 @@ export function CatalogClient({ store, products, categories }: CatalogClientProp
               style={{ background: settings?.accent_color || '#d4af37' }}>
               {store.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={store.logo} alt={store.store_name} className="w-full h-full object-cover" />
+                <img src={resolveImageUrl(store.logo)} alt={store.store_name} className="w-full h-full object-cover" />
               ) : (
                 <Store className="w-6 h-6" style={{ color: isLightColor(settings?.accent_color || '#d4af37') ? '#000' : '#fff' }} />
               )}

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ArrowRight, Check } from 'lucide-react';
 import { useCartStore, useCartTotals, itemKey } from '@/store/cart';
-import { formatMoney, cn } from '@/lib/utils';
+import { formatMoney, cn, resolveImageUrl } from '@/lib/utils';
 import { publicApi } from '@/lib/api';
 import type { StoreSettings, VariantSelection } from '@/types';
 import { accentButton } from './utils';
@@ -151,7 +151,7 @@ export function CheckoutClient({ storeSlug, storeName, settings, isLight }: Chec
                     <div className="w-12 h-12 rounded-lg bg-zinc-800 overflow-hidden flex-shrink-0">
                       {item.product.images[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
+                        <img src={resolveImageUrl(item.product.images[0])} alt={item.product.name} className="w-full h-full object-cover" />
                       ) : null}
                     </div>
                     <div className="flex-1 min-w-0">

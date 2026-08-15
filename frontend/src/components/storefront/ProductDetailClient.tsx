@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Minus, Plus, ShoppingBag, Check, ChevronLeft } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
-import { formatMoney } from '@/lib/utils';
+import { formatMoney, resolveImageUrl } from '@/lib/utils';
 import type { PublicProduct, StoreSettings } from '@/types';
 import { accentButton } from './utils';
 
@@ -72,7 +72,7 @@ export function ProductDetailClient({
         <div className="mt-4 rounded-2xl overflow-hidden aspect-square bg-zinc-800/40 relative">
           {product.images[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+            <img src={resolveImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-zinc-600">No image</div>
           )}

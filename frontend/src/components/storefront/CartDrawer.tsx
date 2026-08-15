@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, X, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCartStore, itemKey, useCartTotals } from '@/store/cart';
-import { formatMoney } from '@/lib/utils';
+import { formatMoney, resolveImageUrl } from '@/lib/utils';
 import type { StoreSettings } from '@/types';
 import { accentButton } from './utils';
 
@@ -134,7 +134,7 @@ function CartItems({
             <div className="w-20 h-20 rounded-xl bg-zinc-800 overflow-hidden flex-shrink-0">
               {item.product.images[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
+                <img src={resolveImageUrl(item.product.images[0])} alt={item.product.name} className="w-full h-full object-cover" />
               ) : null}
             </div>
             <div className="flex-1 min-w-0">

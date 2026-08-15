@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { PublicProduct, StoreSettings } from '@/types';
-import { formatMoney } from '@/lib/utils';
+import { formatMoney, resolveImageUrl } from '@/lib/utils';
 
 interface ProductCardProps {
   product: PublicProduct;
@@ -25,7 +25,7 @@ export function ProductCard({ product, storeSlug, settings, isLight }: ProductCa
       <div className="aspect-square bg-zinc-800/40 overflow-hidden relative">
         {product.images[0] ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+          <img src={resolveImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
             No image
