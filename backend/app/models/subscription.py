@@ -53,13 +53,13 @@ class Subscription(Base):
     status: Mapped[SubscriptionStatus] = mapped_column(
         Enum(SubscriptionStatus, native_enum=False), default=SubscriptionStatus.ACTIVE, nullable=False
     )
-    current_period_start: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
-    current_period_end: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    current_period_start: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+    current_period_end: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     # Payment provider integration point — set once a real provider is connected.
     provider: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     provider_subscription_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     cancel_at_period_end: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    canceled_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    canceled_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
     store: Mapped["Store"] = relationship("Store", back_populates="subscription")
     plan: Mapped[Optional[Plan]] = relationship("Plan", primaryjoin="Subscription.plan_code == Plan.code")
@@ -75,6 +75,6 @@ class Invoice(Base):
     currency: Mapped[str] = mapped_column(String(8), default="USD", nullable=False)
     status: Mapped[str] = mapped_column(String(30), default="open", nullable=False)
     provider_invoice_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    paid_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    paid_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
     subscription: Mapped[Subscription] = relationship("Subscription")

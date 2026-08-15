@@ -23,7 +23,7 @@ class Customer(Base):
     note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     total_orders: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     total_spent: Mapped[Decimal] = mapped_column(Numeric(10, 2), default=0.00, nullable=False)
-    last_order_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_order_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
 
     store: Mapped["Store"] = relationship("Store", back_populates="customers")
     orders: Mapped[List["Order"]] = relationship("Order", back_populates="customer")
@@ -56,7 +56,7 @@ class Order(Base):
     note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     internal_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    placed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+    placed_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
 
     store: Mapped["Store"] = relationship("Store", back_populates="orders")
     customer: Mapped[Optional[Customer]] = relationship("Customer", back_populates="orders")
