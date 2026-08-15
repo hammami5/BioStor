@@ -61,7 +61,8 @@ class Settings(BaseSettings):
     ADMIN_EMAIL: str = "admin@biostor.app"
     ADMIN_PASSWORD: str = "Admin@12345"
 
-    # CORS
+    # CORS — pydantic-settings JSON-decodes list fields, so the env var must be
+    # a JSON array (e.g. ["https://frontend.example.com"]).
     BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:3001"]
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")

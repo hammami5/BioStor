@@ -21,6 +21,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: BACKEND_CORS_ORIGINS
+        # JSON array string, e.g. ["https://biostor-frontend.onrender.com"]
         sync: false
       - key: FRONTEND_URL
         sync: false
