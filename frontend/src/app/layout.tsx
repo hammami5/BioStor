@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
 import { Providers } from '@/components/layout/Providers';
+import { SITE_URL } from '@/lib/utils';
 
 export const metadata: Metadata = {
+  ...(SITE_URL ? { metadataBase: new URL(SITE_URL) } : {}),
   title: {
     default: 'BioStor — Turn Your Bio Link Into a Professional Store',
     template: '%s · BioStor',

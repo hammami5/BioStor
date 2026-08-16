@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { publicApi } from '@/lib/api';
+import { resolveAbsoluteUrl } from '@/lib/utils';
 import { ProductDetailClient } from '@/components/storefront/ProductDetailClient';
 
 interface PageProps {
@@ -11,13 +12,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug, productSlug } = params;
   try {
     const product = await publicApi.publicProduct(slug, productSlug);
+    const image = resolveAbsoluteUrl(product.images[0]);
     return {
       title: product.name,
       description: product.description || undefined,
       openGraph: {
         title: product.name,
         description: product.description || undefined,
-        images: product.images[0] ? [product.images[0]] : undefined,
+        images: image ? [image] : undefined,
       },
     };
   } catch {

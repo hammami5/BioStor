@@ -6,6 +6,8 @@ export const API_BASE_URL =
 
 export const API_ORIGIN = API_BASE_URL.replace(/\/api\/v1\/?$/, '');
 
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || '';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -82,6 +84,14 @@ export function resolveImageUrl(url?: string | null): string {
   if (url.startsWith('/uploads/')) return `${API_ORIGIN}${url}`;
   if (url.startsWith('/demo/')) return url;
   return url;
+}
+
+export function resolveAbsoluteUrl(url?: string | null): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('/uploads/')) return `${API_ORIGIN}${url}`;
+  if (url.startsWith('/') && SITE_URL) return `${SITE_URL}${url}`;
+  return '';
 }
 
 export function slugify(text: string): string {
