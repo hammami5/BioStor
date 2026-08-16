@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/cart';
 import { formatMoney, resolveImageUrl } from '@/lib/utils';
 import type { PublicProduct, StoreSettings } from '@/types';
 import { accentButton } from './utils';
+import { useTranslation } from '@/lib/i18n';
 
 interface ProductDetailClientProps {
   product: PublicProduct;
@@ -29,6 +30,7 @@ export function ProductDetailClient({
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const currency = settings?.currency || 'USD';
+  const { t } = useTranslation();
 
   const selectionError = useMemo(() => {
     for (const group of product.variant_groups) {
@@ -66,7 +68,7 @@ export function ProductDetailClient({
           onClick={() => router.back()}
           className={`inline-flex items-center gap-1.5 text-sm ${mutedColor}`}
         >
-          <ChevronLeft className="w-4 h-4" /> Back
+          <ChevronLeft className="w-4 h-4" /> {t.common_back}
         </button>
 
         <div className="mt-4 rounded-2xl overflow-hidden aspect-square bg-zinc-800/40 relative">
@@ -107,7 +109,7 @@ export function ProductDetailClient({
 
           {!product.in_stock ? (
             <div className="mt-6 px-4 py-3.5 rounded-xl text-sm font-medium text-center bg-red-500/10 text-red-400">
-              This product is currently out of stock.
+              {t.storefront_out_of_stock}
             </div>
           ) : (
             <>
@@ -150,7 +152,7 @@ export function ProductDetailClient({
 
               <div className="mt-5 flex items-center justify-between">
                 <p className="text-sm font-medium" style={{ color: textColor }}>
-                  Quantity
+                  {t.storefront_quantity}
                 </p>
                 <div className="flex items-center gap-3">
                   <button
@@ -181,11 +183,11 @@ export function ProductDetailClient({
               >
                 {added ? (
                   <>
-                    <Check className="w-5 h-5" /> Added to cart
+                    <Check className="w-5 h-5" /> {t.storefront_add_to_cart}
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-5 h-5" /> Add to cart
+                    <ShoppingBag className="w-5 h-5" /> {t.storefront_add_to_cart}
                   </>
                 )}
               </button>

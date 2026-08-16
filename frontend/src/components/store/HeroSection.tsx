@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Instagram, ShoppingBag, Star, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 
 export function HeroSection() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const ctaHref = user ? (user.role === 'super_admin' ? '/admin' : '/dashboard') : '/register';
 
   return (
@@ -28,7 +30,7 @@ export function HeroSection() {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-xs font-medium text-primary">
                 <Instagram className="w-3.5 h-3.5" />
-                Built for the link in your bio
+                {t.hero_badge}
               </div>
             </motion.div>
 
@@ -38,8 +40,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance"
             >
-              Turn your bio link into a{' '}
-              <span className="gradient-text">premium store</span>
+              {t.hero_title}
             </motion.h1>
 
             <motion.p
@@ -48,9 +49,7 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 text-lg text-muted-foreground max-w-xl"
             >
-              BioStor gives you a beautiful, mobile-first storefront your followers actually
-              want to buy from. No code, no inventory headaches — just your products, your
-              brand, one link.
+              {t.hero_subtitle}
             </motion.p>
 
             <motion.div
@@ -61,13 +60,13 @@ export function HeroSection() {
             >
               <Link href={ctaHref}>
                 <Button variant="gold" size="lg" className="w-full sm:w-auto">
-                  Create your store
+                  {t.hero_cta}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <a href="#how-it-works">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  See how it works
+                  {t.hero_secondary}
                 </Button>
               </a>
             </motion.div>
@@ -79,9 +78,9 @@ export function HeroSection() {
               className="mt-10 grid grid-cols-3 gap-6 max-w-md"
             >
               {[
-                { value: '5 min', label: 'to launch' },
-                { value: '0%', label: 'transaction fees' },
-                { value: '24/7', label: 'orders stream in' },
+                { value: t.hero_stat1_value, label: t.hero_stat1_label },
+                { value: t.hero_stat2_value, label: t.hero_stat2_label },
+                { value: t.hero_stat3_value, label: t.hero_stat3_label },
               ].map((stat) => (
                 <div key={stat.label}>
                   <p className="text-2xl font-bold gradient-text">{stat.value}</p>
@@ -99,10 +98,12 @@ export function HeroSection() {
 }
 
 function PhoneMockup() {
+  const { t } = useTranslation();
+
   const products = [
-    { name: 'Silk Touch Serum', price: '$24', tag: 'Bestseller' },
-    { name: 'Gold Necklace', price: '$34', tag: '-13%' },
-    { name: 'Oversized Tee', price: '$25', tag: 'New' },
+    { name: t.hero_mockup_product1_name, price: t.hero_mockup_product1_price, tag: t.hero_mockup_product1_tag },
+    { name: t.hero_mockup_product2_name, price: t.hero_mockup_product2_price, tag: t.hero_mockup_product2_tag },
+    { name: t.hero_mockup_product3_name, price: t.hero_mockup_product3_price, tag: t.hero_mockup_product3_tag },
   ];
 
   return (
@@ -122,12 +123,12 @@ function PhoneMockup() {
               <ShoppingBag className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">Luxe Finds</p>
-              <p className="text-[10px] text-zinc-400">@luxefinds · 12.4k followers</p>
+              <p className="text-sm font-semibold text-white">{t.hero_mockup_store}</p>
+              <p className="text-[10px] text-zinc-400">{t.hero_mockup_handle}</p>
             </div>
           </div>
           <p className="mt-3 text-xs text-zinc-300 leading-relaxed">
-            New drop ✨ Handpicked pieces, shipped worldwide.
+            {t.hero_mockup_bio}
           </p>
         </div>
         <div className="px-4 py-3 space-y-3">
@@ -147,7 +148,7 @@ function PhoneMockup() {
                 <p className="text-sm font-bold gradient-text">{p.price}</p>
               </div>
               <div className="flex items-center gap-1.5">
-                {p.tag !== 'Bestseller' ? (
+                {p.tag !== t.hero_mockup_product1_tag ? (
                   <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gold-500/20 text-gold-400 font-semibold">
                     {p.tag}
                   </span>
@@ -165,14 +166,14 @@ function PhoneMockup() {
         </div>
         <div className="px-4 pb-5">
           <div className="gold-gradient rounded-xl py-3 text-center">
-            <p className="text-sm font-bold text-black">Checkout · $83.00</p>
+            <p className="text-sm font-bold text-black">{t.hero_mockup_checkout}</p>
           </div>
         </div>
       </div>
       <div
         className="absolute -bottom-4 -left-6 px-4 py-3 rounded-2xl bg-card border border-border shadow-soft animate-float"
       >
-        <p className="text-xs text-muted-foreground">New order</p>
+        <p className="text-xs text-muted-foreground">{t.hero_mockup_new_order}</p>
         <p className="text-sm font-bold gradient-text">+$24.00</p>
       </div>
     </motion.div>

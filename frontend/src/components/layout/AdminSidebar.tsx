@@ -6,19 +6,21 @@ import { LayoutDashboard, Users, Store, ShoppingCart, Sparkles, LogOut, ShieldCh
 import { useAuth } from '@/lib/auth/context';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Badge';
-
-const adminNavigation = [
-  { name: 'Overview', href: '/admin', icon: LayoutDashboard },
-  { name: 'Stores', href: '/admin/stores', icon: Store },
-  { name: 'Users', href: '/admin/users', icon: Users },
-  { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
-  { name: 'Plans', href: '/admin/plans', icon: Sparkles },
-  { name: 'Subscriptions', href: '/admin/subscriptions', icon: Sparkles },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+
+  const adminNavigation = [
+    { name: t.dashboard_overview, href: '/admin', icon: LayoutDashboard },
+    { name: t.admin_stores, href: '/admin/stores', icon: Store },
+    { name: t.admin_users, href: '/admin/users', icon: Users },
+    { name: t.admin_orders, href: '/admin/orders', icon: ShoppingCart },
+    { name: t.admin_plans, href: '/admin/plans', icon: Sparkles },
+    { name: t.admin_subscriptions, href: '/admin/subscriptions', icon: Sparkles },
+  ];
 
   return (
     <aside className="fixed left-0 top-0 z-40 w-64 h-screen bg-card border-r border-border overflow-y-auto no-scrollbar hidden lg:block">
@@ -32,7 +34,7 @@ export function AdminSidebar() {
               Bio<span className="gradient-text">Stor</span>
             </span>
             <span className="block text-[10px] text-red-400/80 mt-0.5 uppercase tracking-widest">
-              Admin
+              {t.nav_admin}
             </span>
           </div>
         </Link>
@@ -67,7 +69,7 @@ export function AdminSidebar() {
             className="bg-red-500/15 text-red-400"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user?.full_name || 'Super Admin'}</p>
+            <p className="text-sm font-medium truncate">{user?.full_name || t.admin_super_admin}</p>
             <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
           </div>
         </div>
@@ -76,7 +78,7 @@ export function AdminSidebar() {
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
         >
           <LogOut className="w-[18px] h-[18px] flex-shrink-0" aria-hidden="true" />
-          Sign Out
+          {t.settings_sign_out}
         </button>
       </div>
     </aside>

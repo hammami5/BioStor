@@ -8,11 +8,13 @@ import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { cn, formatDate, getErrorMessage } from '@/lib/utils';
 import type { Plan, Subscription } from '@/types';
 
 export default function SubscriptionPage() {
   const { success, error } = useToast();
+  const { t } = useTranslation();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,13 +29,13 @@ export default function SubscriptionPage() {
         setPlans(ps);
         setSubscription(sub);
       } catch (err) {
-        error('Failed to load subscription', getErrorMessage(err));
+        error(t.common_error, getErrorMessage(err));
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [error]);
+  }, [error, t]);
 
   const selectPlan = async (code: string) => {
     setSelecting(code);
@@ -41,9 +43,9 @@ export default function SubscriptionPage() {
       const updated = await api.selectPlan(code);
       setSubscription(updated);
       const name = plans.find((p) => p.code === code)?.name || code;
-      success(code === 'free' ? 'Downgraded to Free' : `Upgraded to ${name}`, 'Your subscription was updated.');
+      success(code === 'free' ? t.subscription_downgrade : `${t.subscription_upgrade} ${name}`, t.subscription_active);
     } catch (err) {
-      error('Failed to update plan', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setSelecting(null);
     }
@@ -54,10 +56,10 @@ export default function SubscriptionPage() {
     try {
       const updated = await api.cancelSubscription();
       setSubscription(updated);
-      success('Subscription cancelled', 'You will keep access until the end of your billing period.');
+      success(t.subscription_cancel, t.subscription_inactive);
       setCancelOpen(false);
     } catch (err) {
-      error('Failed to cancel', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setCancelling(false);
     }
@@ -83,32 +85,32 @@ export default function SubscriptionPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" /> Subscription
+          <Sparkles className="w-6 h-6 text-primary" /> {t.subscription_title}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Manage your plan. Start free, upgrade when you grow.
+          {t.subscription_manage}
         </p>
       </div>
 
       {subscription && (
         <div className="card-surface p-5 flex items-center justify-between flex-wrap gap-4">
           <div>
-            <p className="text-sm text-muted-foreground">Current plan</p>
+            <p className="text-sm text-muted-foreground">{t.subscription_current_plan}</p>
             <p className="text-xl font-bold mt-0.5 flex items-center gap-2">
               {currentPlan?.name || subscription.plan_code}
               <Badge variant={subscription.cancel_at_period_end ? 'warning' : 'gold'}>
-                {subscription.cancel_at_period_end ? 'Cancels at period end' : subscription.status}
+                {subscription.cancel_at_period_end ? t.subscription_cancel : subscription.status}
               </Badge>
             </p>
           </div>
           {subscription.current_period_end && (
             <p className="text-sm text-muted-foreground">
-              Renews {formatDate(subscription.current_period_end)}
+              {t.subscription_active} {formatDate(subscription.current_period_end)}
             </p>
           )}
           {!subscription.cancel_at_period_end && subscription.status !== 'cancelled' && (
             <Button variant="outline" size="sm" onClick={() => setCancelOpen(true)}>
-              <X className="w-4 h-4" /> Cancel subscription
+              <X className="w-4 h-4" /> {t.subscription_cancel}
             </Button>
           )}
         </div>
@@ -128,11 +130,11 @@ export default function SubscriptionPage() {
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">{plan.name}</h3>
-                {isCurrent && <Badge variant="gold">Current</Badge>}
+                {isCurrent && <Badge variant="gold">{t.subscription_active}</Badge>}
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-3xl font-bold">${plan.price_monthly}</span>
-                <span className="text-sm text-muted-foreground">/month</span>
+                <span className="text-sm text-muted-foreground">{t.pricing_per_month}</span>
               </div>
               <p className="mt-2 text-sm text-muted-foreground">{plan.description}</p>
               <ul className="mt-5 space-y-2.5 flex-1">
@@ -146,7 +148,7 @@ export default function SubscriptionPage() {
               <div className="mt-5">
                 {isCurrent ? (
                   <Button variant="outline" className="w-full" disabled>
-                    Your plan
+                    {t.subscription_active}
                   </Button>
                 ) : (
                   <Button
@@ -157,11 +159,11 @@ export default function SubscriptionPage() {
                   >
                     {isFree ? (
                       <>
-                        <Zap className="w-4 h-4" /> Switch to Free
+                        <Zap className="w-4 h-4" /> {t.subscription_downgrade}
                       </>
                     ) : (
                       <>
-                        <Building2 className="w-4 h-4" /> Upgrade to {plan.name}
+                        <Building2 className="w-4 h-4" /> {t.subscription_upgrade} {plan.name}
                       </>
                     )}
                   </Button>
@@ -173,17 +175,16 @@ export default function SubscriptionPage() {
       </div>
 
       <p className="text-xs text-muted-foreground max-w-2xl">
-        Payment is currently simulated — switching plans updates your subscription instantly.
-        In production, payments would be processed securely via a payment provider.
+        {t.subscription_manage}
       </p>
 
       <ConfirmDialog
         open={cancelOpen}
         onClose={() => setCancelOpen(false)}
         onConfirm={cancelSub}
-        title="Cancel subscription?"
-        description="You'll keep access until the end of your billing period, then downgrade to the Free plan."
-        confirmLabel="Cancel subscription"
+        title={t.subscription_cancel}
+        description={t.subscription_inactive}
+        confirmLabel={t.subscription_cancel}
         destructive
         loading={cancelling}
       />

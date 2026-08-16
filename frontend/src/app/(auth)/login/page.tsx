@@ -8,11 +8,13 @@ import { PublicOnlyRoute } from '@/components/layout/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 import { getErrorMessage } from '@/lib/utils';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login, isSuperAdmin } = useAuth();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -52,14 +54,14 @@ export default function LoginPage() {
           </div>
 
           <div className="card-surface p-8">
-            <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+            <h1 className="text-2xl font-bold tracking-tight">{t.login_title}</h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Sign in to manage your store.
+              {t.hero_subtitle}
             </p>
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <Input
-                label="Email"
+                label={t.login_email}
                 type="email"
                 required
                 autoComplete="email"
@@ -69,7 +71,7 @@ export default function LoginPage() {
               />
               <div>
                 <Input
-                  label="Password"
+                  label={t.login_password}
                   type="password"
                   required
                   autoComplete="current-password"
@@ -82,7 +84,7 @@ export default function LoginPage() {
                     href="/forgot-password"
                     className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
                   >
-                    Forgot password?
+                    {t.login_forgot}
                   </Link>
                 </div>
               </div>
@@ -94,20 +96,20 @@ export default function LoginPage() {
               )}
 
               <Button type="submit" variant="gold" className="w-full" size="lg" isLoading={loading}>
-                Sign in
+                {t.login_button}
               </Button>
             </form>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              New to BioStor?{' '}
+              {t.login_no_account}{' '}
               <Link href="/register" className="font-medium text-primary hover:underline">
-                Create a store
+                {t.login_register_link}
               </Link>
             </p>
           </div>
 
           <p className="mt-6 text-center text-xs text-muted-foreground">
-            <Link href="/" className="hover:text-primary">Back to home</Link>
+            <Link href="/" className="hover:text-primary">{t.common_back}</Link>
           </p>
         </div>
       </div>

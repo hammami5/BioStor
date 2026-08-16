@@ -10,6 +10,7 @@ import { Select } from '@/components/ui/Select';
 import { Tabs, TabContent } from '@/components/ui/Tabs';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { cn, getErrorMessage, isValidHexColor } from '@/lib/utils';
 import type { Store } from '@/types';
 
@@ -43,6 +44,7 @@ const DEFAULT_STORE: Store = {
 export default function StorePage() {
   const router = useRouter();
   const { success, error } = useToast();
+  const { t } = useTranslation();
   const [tab, setTab] = useState('design');
   const [store, setStore] = useState<Store>(DEFAULT_STORE);
   const [loading, setLoading] = useState(true);
@@ -54,10 +56,10 @@ export default function StorePage() {
       .getMyStore()
       .then(setStore)
       .catch((err) => {
-        error('Failed to load store', getErrorMessage(err));
+        error(t.common_error, getErrorMessage(err));
       })
       .finally(() => setLoading(false));
-  }, [error]);
+  }, [error, t]);
 
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,9 +74,9 @@ export default function StorePage() {
         contact_city: store.contact_city,
       });
       setStore(updated);
-      success('Store updated', 'Your profile changes are live.');
+      success(t.store_saved, t.store_profile);
     } catch (err) {
-      error('Failed to save', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setSaving(false);
     }
@@ -83,7 +85,7 @@ export default function StorePage() {
   const saveDesign = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!store.settings || !isValidHexColor(store.settings.accent_color)) {
-      error('Invalid accent color', 'Use a hex color like #d4af37.');
+      error(t.common_error, t.store_accent_color);
       return;
     }
     setSavingDesign(true);
@@ -96,9 +98,9 @@ export default function StorePage() {
         delivery_fee: store.settings!.delivery_fee,
       });
       setStore(updated);
-      success('Design saved', 'Your storefront has a new look.');
+      success(t.store_saved, t.store_design);
     } catch (err) {
-      error('Failed to save design', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setSavingDesign(false);
     }
@@ -108,9 +110,9 @@ export default function StorePage() {
     try {
       const updated = await api.uploadStoreLogo(file);
       setStore(updated);
-      success('Logo updated');
+      success(t.store_logo);
     } catch (err) {
-      error('Logo upload failed', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     }
   };
 
@@ -129,14 +131,14 @@ export default function StorePage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Your store</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t.store_title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Customize how your storefront looks and what your customers see.
+            {t.store_description}
           </p>
         </div>
         <a href={`/store/${store.slug}`} target="_blank" rel="noopener noreferrer">
           <Button variant="outline">
-            <ExternalLink className="w-4 h-4" /> Preview store
+            <ExternalLink className="w-4 h-4" /> {t.store_preview}
           </Button>
         </a>
       </div>
@@ -145,8 +147,8 @@ export default function StorePage() {
         value={tab}
         onValueChange={setTab}
         items={[
-          { value: 'design', label: 'Design' },
-          { value: 'profile', label: 'Profile & contact' },
+          { value: 'design', label: t.store_design },
+          { value: 'profile', label: t.store_profile },
         ]}
       />
 
@@ -155,15 +157,15 @@ export default function StorePage() {
           <form onSubmit={saveDesign} className="card-surface p-6 space-y-6">
             <div>
               <h3 className="font-semibold flex items-center gap-2">
-                <Palette className="w-4 h-4 text-primary" /> Branding
+                <Palette className="w-4 h-4 text-primary" /> {t.store_design}
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                Accent color is used for buttons and highlights.
+                {t.store_accent_color}
               </p>
             </div>
 
             <div className="flex items-center gap-3">
-              <Label>Accent color</Label>
+              <Label>{t.store_accent_color}</Label>
               <input
                 type="color"
                 value={accent}
@@ -201,7 +203,7 @@ export default function StorePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Button style</Label>
+                <Label>{t.store_button_style}</Label>
                 <Select
                   value={store.settings?.button_style}
                   onChange={(e) =>
@@ -218,7 +220,7 @@ export default function StorePage() {
                 />
               </div>
               <div>
-                <Label>Theme</Label>
+                <Label>{t.store_theme}</Label>
                 <Select
                   value={store.settings?.theme}
                   onChange={(e) =>
@@ -234,13 +236,14 @@ export default function StorePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Currency</Label>
+                <Label>{t.store_currency}</Label>
                 <Select
                   value={store.settings?.currency}
                   onChange={(e) =>
                     setStore((s) => ({ ...s, settings: { ...s.settings!, currency: e.target.value } }))
                   }
                   options={[
+                    { value: 'TND', label: 'TND · د.ت' },
                     { value: 'USD', label: 'USD · $' },
                     { value: 'EUR', label: 'EUR · €' },
                     { value: 'GBP', label: 'GBP · £' },
@@ -249,7 +252,7 @@ export default function StorePage() {
                 />
               </div>
               <div>
-                <Label>Delivery fee</Label>
+                <Label>{t.store_delivery_fee}</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -264,7 +267,7 @@ export default function StorePage() {
 
             <div className="pt-4 border-t border-border/60">
               <Button type="submit" variant="gold" isLoading={savingDesign}>
-                Save design
+                {t.store_save}
               </Button>
             </div>
           </form>
@@ -273,10 +276,10 @@ export default function StorePage() {
         <TabContent value="profile" activeValue={tab}>
           <form onSubmit={saveProfile} className="card-surface p-6 space-y-4">
             <h3 className="font-semibold flex items-center gap-2">
-              <StoreIcon className="w-4 h-4 text-primary" /> Store profile
+              <StoreIcon className="w-4 h-4 text-primary" /> {t.store_profile}
             </h3>
             <div>
-              <Label>Logo</Label>
+              <Label>{t.store_logo}</Label>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl overflow-hidden bg-muted/50 flex items-center justify-center">
                   {store.logo ? (
@@ -287,7 +290,7 @@ export default function StorePage() {
                   )}
                 </div>
                 <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-medium cursor-pointer hover:bg-muted transition-colors">
-                  <ImagePlus className="w-4 h-4" /> Upload logo
+                  <ImagePlus className="w-4 h-4" /> {t.store_logo}
                   <input
                     type="file"
                     accept="image/*"
@@ -302,59 +305,59 @@ export default function StorePage() {
               </div>
             </div>
             <div>
-              <Label>Store name</Label>
-              <Input value={store.store_name} disabled helperText="Contact support to rename your store." />
+              <Label>{t.store_name}</Label>
+              <Input value={store.store_name} disabled helperText={t.common_close} />
             </div>
             <Input
-              label="Description"
+              label={t.store_description}
               value={store.description || ''}
               onChange={(e) => setStore((s) => ({ ...s, description: e.target.value }))}
-              placeholder="A short line about your store…"
+              placeholder={t.store_description}
             />
             <Input
-              label="Instagram username"
+              label={t.store_instagram}
               value={store.instagram_username || ''}
               onChange={(e) => setStore((s) => ({ ...s, instagram_username: e.target.value }))}
               placeholder="yourhandle"
-              helperText="Without the @"
+              helperText={t.store_contact_email}
             />
             <div className="grid grid-cols-2 gap-4">
               <Input
-                label="Contact email"
+                label={t.store_contact_email}
                 type="email"
                 value={store.contact_email || ''}
                 onChange={(e) => setStore((s) => ({ ...s, contact_email: e.target.value }))}
                 placeholder="hello@…"
               />
               <Input
-                label="Contact phone"
+                label={t.store_contact_phone}
                 value={store.contact_phone || ''}
                 onChange={(e) => setStore((s) => ({ ...s, contact_phone: e.target.value }))}
                 placeholder="+1 555 000 0000"
               />
             </div>
             <Input
-              label="Address"
+              label={t.store_contact_address}
               value={store.contact_address || ''}
               onChange={(e) => setStore((s) => ({ ...s, contact_address: e.target.value }))}
-              placeholder="Street address"
+              placeholder={t.store_contact_address}
             />
             <Input
-              label="City"
+              label={t.store_city}
               value={store.contact_city || ''}
               onChange={(e) => setStore((s) => ({ ...s, contact_city: e.target.value }))}
-              placeholder="City"
+              placeholder={t.store_city}
             />
             <div className="pt-4 border-t border-border/60">
               <Button type="submit" variant="gold" isLoading={saving}>
-                Save profile
+                {t.store_save}
               </Button>
             </div>
           </form>
         </TabContent>
 
         <div className="lg:sticky lg:top-20">
-          <p className="text-sm font-medium text-muted-foreground mb-3">Live preview</p>
+          <p className="text-sm font-medium text-muted-foreground mb-3">{t.store_preview}</p>
           <PhonePreview store={store} accent={accent} />
         </div>
       </div>
@@ -391,7 +394,7 @@ function PhonePreview({ store, accent }: { store: Store; accent: string }) {
               {store.store_name}
             </p>
             <p className={cn('text-[10px]', theme === 'light' ? 'text-zinc-500' : 'text-zinc-400')}>
-              {store.instagram_username ? `@${store.instagram_username}` : 'Your store'}
+              {store.instagram_username ? `@${store.instagram_username}` : store.store_name}
             </p>
           </div>
         </div>

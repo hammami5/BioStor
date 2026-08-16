@@ -16,35 +16,9 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Badge';
-
-const sections = [
-  {
-    label: 'Manage',
-    items: [
-      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-      { name: 'Products', href: '/dashboard/products', icon: Package },
-      { name: 'Orders', href: '/dashboard/orders', icon: ShoppingCart },
-      { name: 'Customers', href: '/dashboard/customers', icon: Users },
-    ],
-  },
-  {
-    label: 'Grow',
-    items: [
-      { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-      { name: 'Notifications', href: '/dashboard/notifications', icon: Bell },
-    ],
-  },
-  {
-    label: 'Configure',
-    items: [
-      { name: 'Store', href: '/dashboard/store', icon: StoreIcon },
-      { name: 'Subscription', href: '/dashboard/subscription', icon: Sparkles },
-      { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-    ],
-  },
-];
 
 interface DashboardSidebarProps {
   open?: boolean;
@@ -54,6 +28,34 @@ interface DashboardSidebarProps {
 export function DashboardSidebar({ open = false, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+
+  const sections = [
+    {
+      label: t.dashboard_overview,
+      items: [
+        { name: t.nav_dashboard, href: '/dashboard', icon: LayoutDashboard },
+        { name: t.nav_products, href: '/dashboard/products', icon: Package },
+        { name: t.nav_orders, href: '/dashboard/orders', icon: ShoppingCart },
+        { name: t.nav_customers, href: '/dashboard/customers', icon: Users },
+      ],
+    },
+    {
+      label: t.analytics_revenue,
+      items: [
+        { name: t.nav_analytics, href: '/dashboard/analytics', icon: BarChart3 },
+        { name: t.nav_notifications, href: '/dashboard/notifications', icon: Bell },
+      ],
+    },
+    {
+      label: t.settings_title,
+      items: [
+        { name: t.nav_store, href: '/dashboard/store', icon: StoreIcon },
+        { name: t.nav_subscription, href: '/dashboard/subscription', icon: Sparkles },
+        { name: t.nav_settings, href: '/dashboard/settings', icon: Settings },
+      ],
+    },
+  ];
 
   const content = (
     <nav className="p-4 space-y-6" aria-label="Dashboard navigation">
@@ -110,7 +112,7 @@ export function DashboardSidebar({ open = false, onClose }: DashboardSidebarProp
             className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:bg-red-500/10 hover:text-red-400 transition-all duration-200"
           >
             <LogOut className="w-[18px] h-[18px] flex-shrink-0" aria-hidden="true" />
-            Sign Out
+            {t.nav_logout}
           </button>
         </div>
       </div>

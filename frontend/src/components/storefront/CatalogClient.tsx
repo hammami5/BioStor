@@ -6,6 +6,7 @@ import { Store, ShoppingBag, Instagram, Search } from 'lucide-react';
 import type { PublicProduct, Store as StoreModel, Category } from '@/types';
 import { accentText, isLightColor } from './utils';
 import { resolveImageUrl } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 import { ProductCard } from './ProductCard';
 import { CartButton } from './CartDrawer';
 
@@ -21,6 +22,7 @@ export function CatalogClient({ store, products, categories }: CatalogClientProp
   const activeCategory = searchParams.get('category') || '';
   const [query, setQuery] = useState('');
   const settings = store.settings;
+  const { t } = useTranslation();
 
   const filtered = useMemo(() => {
     let list = products;
@@ -86,7 +88,7 @@ export function CatalogClient({ store, products, categories }: CatalogClientProp
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products…"
+            placeholder={t.storefront_search}
             className={`w-full pl-10 pr-4 py-2.5 rounded-2xl text-sm outline-none transition-shadow ${isLight ? 'bg-white border border-zinc-200 text-zinc-900' : 'bg-zinc-900 border border-zinc-800 text-white'}`}
             style={{ boxShadow: 'none' }}
           />
@@ -105,7 +107,7 @@ export function CatalogClient({ store, products, categories }: CatalogClientProp
                     : { color: 'rgba(255,255,255,0.6)' }
               }
             >
-              All
+              {t.storefront_all}
             </button>
             {categories.map((cat) => (
               <button
@@ -129,7 +131,7 @@ export function CatalogClient({ store, products, categories }: CatalogClientProp
         {filtered.length === 0 ? (
           <div className="py-20 text-center">
             <ShoppingBag className="w-10 h-10 mx-auto text-zinc-600" />
-            <p className={`mt-3 text-sm ${mutedColor}`}>No products found.</p>
+            <p className={`mt-3 text-sm ${mutedColor}`}>{t.common_no_results}</p>
           </div>
         ) : (
           <div className="mt-6 grid grid-cols-2 gap-4">

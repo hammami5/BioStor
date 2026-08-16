@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import type { PublicProduct, StoreSettings } from '@/types';
 import { formatMoney, resolveImageUrl } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 interface ProductCardProps {
   product: PublicProduct;
@@ -12,6 +13,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, storeSlug, settings, isLight }: ProductCardProps) {
+  const { t } = useTranslation();
   const cardBg = isLight ? 'bg-white border-zinc-200' : 'bg-zinc-900 border-zinc-800';
   const textColor = isLight ? 'text-zinc-900' : 'text-white';
   const mutedColor = isLight ? 'text-zinc-500' : 'text-zinc-400';
@@ -55,7 +57,7 @@ export function ProductCard({ product, storeSlug, settings, isLight }: ProductCa
         <div className="mt-2">
           <span className="block text-center py-2 rounded-xl text-sm font-bold text-white"
             style={{ background: settings?.accent_color || '#d4af37' }}>
-            {product.in_stock ? 'View' : 'Sold out'}
+            {product.in_stock ? t.storefront_view : t.storefront_sold_out}
           </span>
         </div>
       </div>

@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 
 export function CTASection() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const href = user ? (user.role === 'super_admin' ? '/admin' : '/dashboard') : '/register';
 
   return (
@@ -18,17 +20,17 @@ export function CTASection() {
             aria-hidden="true"
           />
           <h2 className="relative text-3xl sm:text-5xl font-bold tracking-tight text-balance">
-            Your followers are ready to buy.
+            {t.cta_title}
             <br />
-            <span className="gradient-text">Give them a store.</span>
+            <span className="gradient-text">{t.cta_highlight}</span>
           </h2>
           <p className="relative mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-            Set up your BioStor link in minutes. Your first order could be waiting.
+            {t.cta_subtitle}
           </p>
           <div className="relative mt-8">
             <Link href={href}>
               <Button variant="gold" size="xl">
-                Start your store — it&apos;s free
+                {t.cta_button}
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>

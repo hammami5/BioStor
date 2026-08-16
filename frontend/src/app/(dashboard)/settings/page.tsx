@@ -10,12 +10,14 @@ import { Input } from '@/components/ui/Input';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { formatDate, getErrorMessage } from '@/lib/utils';
 
 export default function SettingsPage() {
   const { user, refreshUser, logout } = useAuth();
   const router = useRouter();
   const { success, error } = useToast();
+  const { t } = useTranslation();
 
   const [profile, setProfile] = useState({
     full_name: user?.full_name || '',
@@ -32,9 +34,9 @@ export default function SettingsPage() {
     setSavingProfile(true);
     try {
       await refreshUser();
-      success('Profile up to date');
+      success(t.common_success);
     } catch (err) {
-      error('Failed to load profile', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setSavingProfile(false);
     }
@@ -44,17 +46,17 @@ export default function SettingsPage() {
     e.preventDefault();
     setPasswordMsg('');
     if (password.new.length < 8) {
-      setPasswordMsg('New password must be at least 8 characters.');
+      setPasswordMsg(t.validation_min_length);
       return;
     }
     if (password.new !== password.confirm) {
-      setPasswordMsg('Passwords do not match.');
+      setPasswordMsg(t.validation_password_match);
       return;
     }
     setSavingPassword(true);
     try {
       // Demo environment has no password-change endpoint yet — keep local.
-      setPasswordMsg('Password change is not available in the demo build.');
+      setPasswordMsg(t.common_error);
       setPassword({ current: '', new: '', confirm: '' });
     } finally {
       setSavingPassword(false);
@@ -66,15 +68,15 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Manage your account.</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t.settings_title}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t.settings_account}</p>
       </div>
 
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
             <User className="w-4 h-4 text-primary" />
-            <CardTitle>Profile</CardTitle>
+            <CardTitle>{t.settings_profile}</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
@@ -85,27 +87,27 @@ export default function SettingsPage() {
             <div>
               <p className="font-medium">@{user.username}</p>
               <p className="text-sm text-muted-foreground">
-                Member since {formatDate(user.created_at)}
+                {t.common_of} {formatDate(user.created_at)}
               </p>
             </div>
             <Badge variant={user.is_verified ? 'success' : 'warning'} className="ml-auto">
-              {user.is_verified ? 'Verified' : 'Unverified'}
+              {user.is_verified ? t.common_yes : t.common_no}
             </Badge>
           </div>
           <form onSubmit={saveProfile} className="space-y-4">
             <Input
-              label="Full name"
+              label={t.register_name}
               value={profile.full_name}
               onChange={(e) => setProfile((p) => ({ ...p, full_name: e.target.value }))}
             />
             <Input
-              label="Email"
+              label={t.login_email}
               type="email"
               value={profile.email}
               onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))}
             />
             <Button type="submit" variant="gold" isLoading={savingProfile}>
-              Save profile
+              {t.store_save}
             </Button>
           </form>
         </CardContent>
@@ -115,13 +117,13 @@ export default function SettingsPage() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-primary" />
-            <CardTitle>Security</CardTitle>
+            <CardTitle>{t.settings_password}</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={changePassword} className="space-y-4">
             <Input
-              label="Current password"
+              label={t.settings_current_password}
               type="password"
               value={password.current}
               onChange={(e) => setPassword((p) => ({ ...p, current: e.target.value }))}
@@ -129,14 +131,14 @@ export default function SettingsPage() {
             />
             <div className="grid grid-cols-2 gap-4">
               <Input
-                label="New password"
+                label={t.settings_new_password}
                 type="password"
                 value={password.new}
                 onChange={(e) => setPassword((p) => ({ ...p, new: e.target.value }))}
                 autoComplete="new-password"
               />
               <Input
-                label="Confirm new password"
+                label={t.settings_confirm_password}
                 type="password"
                 value={password.confirm}
                 onChange={(e) => setPassword((p) => ({ ...p, confirm: e.target.value }))}
@@ -147,7 +149,7 @@ export default function SettingsPage() {
               <p className="text-sm text-muted-foreground">{passwordMsg}</p>
             )}
             <Button type="submit" variant="outline" isLoading={savingPassword}>
-              Change password
+              {t.settings_change_password}
             </Button>
           </form>
         </CardContent>
@@ -160,7 +162,7 @@ export default function SettingsPage() {
               router.replace('/login');
             }}
           >
-            Sign out of BioStor
+            {t.settings_sign_out}
           </Button>
         </CardFooter>
       </Card>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Phone, MapPin, ShoppingCart } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Avatar } from '@/components/ui/Badge';
 import { OrderStatusBadge } from '@/components/ui/StatusBadge';
@@ -16,6 +17,7 @@ import type { CustomerDetail } from '@/types';
 export default function CustomerDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
+  const { t } = useTranslation();
   const { error } = useToast();
   const [customer, setCustomer] = useState<CustomerDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,11 +27,11 @@ export default function CustomerDetailPage() {
       .getCustomer(parseInt(params.id))
       .then(setCustomer)
       .catch((err) => {
-        error('Customer not found', getErrorMessage(err));
+        error(t.customers_not_found, getErrorMessage(err));
         router.replace('/dashboard/customers');
       })
       .finally(() => setLoading(false));
-  }, [params.id, router, error]);
+  }, [params.id, router, error, t.customers_not_found]);
 
   if (loading || !customer) {
     return (
@@ -50,17 +52,17 @@ export default function CustomerDetailPage() {
           href="/dashboard/customers"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-3"
         >
-          <ArrowLeft className="w-4 h-4" /> Back to customers
+          <ArrowLeft className="w-4 h-4" /> {t.customers_back}
         </Link>
         <h1 className="text-2xl font-bold tracking-tight">{customer.full_name}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Customer since {formatDateTime(customer.created_at)}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{t.customers_since} {formatDateTime(customer.created_at)}</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Details</CardTitle>
+              <CardTitle>{t.customers_details}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">
@@ -85,16 +87,16 @@ export default function CustomerDetailPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Stats</CardTitle>
+              <CardTitle>{t.customers_stats}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-2xl font-bold">{customer.total_orders}</p>
-                <p className="text-xs text-muted-foreground">Orders</p>
+                <p className="text-xs text-muted-foreground">{t.customers_orders}</p>
               </div>
               <div>
                 <p className="text-2xl font-bold">{formatMoney(customer.total_spent)}</p>
-                <p className="text-xs text-muted-foreground">Total spent</p>
+                <p className="text-xs text-muted-foreground">{t.customers_total_spent}</p>
               </div>
             </CardContent>
           </Card>
@@ -102,13 +104,13 @@ export default function CustomerDetailPage() {
 
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Order history</CardTitle>
+            <CardTitle>{t.customers_order_history}</CardTitle>
           </CardHeader>
           <CardContent className="px-0 py-0">
             {customer.orders.length === 0 ? (
               <div className="px-5 py-12 text-center">
                 <ShoppingCart className="w-8 h-8 text-muted-foreground/40 mx-auto" />
-                <p className="mt-3 text-sm text-muted-foreground">No orders yet.</p>
+                <p className="mt-3 text-sm text-muted-foreground">{t.customers_no_orders}</p>
               </div>
             ) : (
               <div className="divide-y divide-border/40">

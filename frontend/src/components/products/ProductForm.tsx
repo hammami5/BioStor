@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Trash2, ChevronDown } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea, Label } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
@@ -21,6 +22,7 @@ interface ProductFormProps {
 
 export function ProductForm({ product, categories, onDone }: ProductFormProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   const { success, error } = useToast();
   const isEdit = !!product;
 
@@ -61,11 +63,11 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
     };
 
     if (!payload.name.trim()) {
-      error('Product name is required');
+      error(t.products_name_required_error);
       return;
     }
     if (payload.price <= 0) {
-      error('Price must be greater than zero');
+      error(t.products_price_positive_error);
       return;
     }
 
@@ -73,14 +75,14 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
     try {
       if (isEdit && product) {
         await api.updateProduct(product.id, payload);
-        success('Product updated', `${payload.name} was saved successfully.`);
+        success(t.products_updated_success, `${payload.name} ${t.products_updated_desc}`);
       } else {
         await api.createProduct(payload);
-        success('Product created', `${payload.name} is now live in your store.`);
+        success(t.products_created_success, `${payload.name} ${t.products_created_desc}`);
       }
       onDone ? onDone() : router.push('/dashboard/products');
     } catch (err) {
-      error('Failed to save product', getErrorMessage(err));
+      error(t.products_failed_save, getErrorMessage(err));
     } finally {
       setSaving(false);
     }
@@ -110,44 +112,44 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="card-surface p-6 space-y-4">
-            <h3 className="font-semibold">Basic info</h3>
+            <h3 className="font-semibold">{t.products_basic_info}</h3>
             <Input
-              label="Product name *"
+              label={`${t.products_name} *`}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Silk Touch Serum"
+              placeholder={t.products_name_placeholder}
             />
             <Textarea
-              label="Description"
+              label={t.products_description}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe your product…"
+              placeholder={t.products_description_placeholder}
               rows={4}
             />
             <div className="grid grid-cols-2 gap-4">
               <Input
-                label="Price *"
+                label={`${t.products_price} *`}
                 type="number"
                 step="0.01"
                 min="0"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                placeholder="29.00"
+                placeholder={t.products_price_placeholder}
               />
               <Input
-                label="Discount price"
+                label={t.products_discount_price}
                 type="number"
                 step="0.01"
                 min="0"
                 value={discountPrice}
                 onChange={(e) => setDiscountPrice(e.target.value)}
                 placeholder="24.00"
-                helperText="Optional — must be lower than price"
+                helperText={t.products_discount_helper}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Input
-                label="Stock"
+                label={t.products_stock}
                 type="number"
                 min="0"
                 value={stock}
@@ -155,12 +157,12 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                 placeholder="0"
               />
               <div>
-                <Label>Category</Label>
+                <Label>{t.products_category}</Label>
                 <Select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
                   options={[
-                    { value: '', label: 'No category' },
+                    { value: '', label: t.products_no_category },
                     ...categories.map((c) => ({ value: c.id.toString(), label: c.name })),
                   ]}
                 />
@@ -169,16 +171,16 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
           </div>
 
           <div className="card-surface p-6">
-            <h3 className="font-semibold mb-4">Images</h3>
+            <h3 className="font-semibold mb-4">{t.products_images_title}</h3>
             <ImageUpload images={images} onChange={setImages} max={6} />
           </div>
 
           <div className="card-surface p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="font-semibold">Variants</h3>
+                <h3 className="font-semibold">{t.products_variants}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Sizes, colors, scents… Optional but powerful.
+                  {t.products_variants_desc}
                 </p>
               </div>
               <Button
@@ -187,13 +189,13 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                 size="sm"
                 onClick={() => setGroups((g) => [...g, { name: '', options: [{ value: '', additional_price: 0, stock: null }] }])}
               >
-                <Plus className="w-4 h-4" /> Add group
+                <Plus className="w-4 h-4" /> {t.products_add_group}
               </Button>
             </div>
 
             {groups.length === 0 ? (
               <p className="text-sm text-muted-foreground py-4 text-center border border-dashed border-border rounded-xl">
-                No variants. Add size or color options to let customers customize their order.
+                {t.products_no_variants}
               </p>
             ) : (
               <div className="space-y-4">
@@ -203,14 +205,14 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                       <Input
                         value={group.name}
                         onChange={(e) => updateGroup(gIdx, 'name', e.target.value)}
-                        placeholder="Group name, e.g. Size"
+                        placeholder={t.products_group_placeholder}
                         className="max-w-[220px]"
                       />
                       <button
                         type="button"
                         onClick={() => setGroups((g) => g.filter((_, i) => i !== gIdx))}
                         className="p-2 rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
-                        aria-label="Remove group"
+                        aria-label={t.products_remove_group}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -221,7 +223,7 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                           <Input
                             value={option.value}
                             onChange={(e) => updateOption(gIdx, oIdx, 'value', e.target.value)}
-                            placeholder="Option, e.g. M"
+                            placeholder={t.products_option_placeholder}
                             className="flex-1"
                           />
                           <Input
@@ -229,14 +231,14 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                             step="0.01"
                             value={option.additional_price || ''}
                             onChange={(e) => updateOption(gIdx, oIdx, 'additional_price', parseFloat(e.target.value) || 0)}
-                            placeholder="+price"
+                            placeholder={t.products_price_input_placeholder}
                             className="w-24"
                           />
                           <Input
                             type="number"
                             value={option.stock ?? ''}
                             onChange={(e) => updateOption(gIdx, oIdx, 'stock', e.target.value === '' ? null : parseInt(e.target.value))}
-                            placeholder="stock"
+                            placeholder={t.products_stock_placeholder}
                             className="w-20"
                           />
                           <button
@@ -251,7 +253,7 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                               )
                             }
                             className="p-2 rounded-lg text-muted-foreground hover:text-red-400"
-                            aria-label="Remove option"
+                            aria-label={t.products_remove_option}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -270,7 +272,7 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
                         }
                         className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline mt-1"
                       >
-                        <Plus className="w-3.5 h-3.5" /> Add option
+                        <Plus className="w-3.5 h-3.5" /> {t.products_add_option}
                       </button>
                     </div>
                   </div>
@@ -282,24 +284,24 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
 
         <div className="space-y-6">
           <div className="card-surface p-6 space-y-5">
-            <h3 className="font-semibold">Visibility</h3>
+            <h3 className="font-semibold">{t.products_visibility}</h3>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">Active</p>
-                <p className="text-xs text-muted-foreground">Visible in your store</p>
+                <p className="text-sm font-medium">{t.admin_header_active}</p>
+                <p className="text-xs text-muted-foreground">{t.products_active_desc}</p>
               </div>
               <Switch checked={active} onCheckedChange={setActive} />
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">Featured</p>
-                <p className="text-xs text-muted-foreground">Showcase this product</p>
+                <p className="text-sm font-medium">{t.products_featured}</p>
+                <p className="text-xs text-muted-foreground">{t.products_featured_desc}</p>
               </div>
               <Switch checked={featured} onCheckedChange={setFeatured} />
             </div>
             {name && (
               <div className="px-3 py-2.5 rounded-xl bg-muted/50 text-xs text-muted-foreground">
-                Store link:{' '}
+                {t.products_store_link}{' '}
                 <span className="text-foreground font-medium">
                   /store/&#123;slug&#125;/products/{slugify(name) || '…'}
                 </span>
@@ -308,7 +310,7 @@ export function ProductForm({ product, categories, onDone }: ProductFormProps) {
           </div>
 
           <Button type="submit" variant="gold" size="lg" className="w-full" isLoading={saving}>
-            {isEdit ? 'Save changes' : 'Create product'}
+            {isEdit ? t.admin_save_changes : t.products_create_title}
           </Button>
         </div>
       </div>

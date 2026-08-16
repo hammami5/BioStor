@@ -3,44 +3,28 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-const faqs = [
-  {
-    q: 'Do I need to know how to code?',
-    a: 'Not at all. BioStor is designed to be used without any technical skills. Add products, customize the look, and share your link — that is it.',
-  },
-  {
-    q: 'How do my customers pay?',
-    a: 'Customers place an order through a simple form — they share their name, phone, and delivery details. You confirm the order and arrange payment and shipping your way, which keeps fees at zero.',
-  },
-  {
-    q: 'Can I use my own logo and colors?',
-    a: 'Yes. Free plans include BioStor branding, while Pro and Business plans let you upload your logo, pick custom accent colors, and choose button styles to match your brand.',
-  },
-  {
-    q: 'How much does it cost?',
-    a: 'BioStor is free to start with 20 products. Pro is $12/month and Business is $29/month. There are never any transaction fees on top.',
-  },
-  {
-    q: 'Where should I put my store link?',
-    a: 'Anywhere your audience is: your Instagram bio, TikTok bio, Facebook page, YouTube channel, or even a QR code on packaging.',
-  },
-  {
-    q: 'What happens if I cancel my subscription?',
-    a: 'Your store and data stay safe. You keep your free plan features and can upgrade again whenever you like.',
-  },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function FAQSection({ id }: { id?: string }) {
+  const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqs = [
+    { q: t.faq1_q, a: t.faq1_a },
+    { q: t.faq2_q, a: t.faq2_a },
+    { q: t.faq3_q, a: t.faq3_a },
+    { q: t.faq4_q, a: t.faq4_a },
+    { q: t.faq5_q, a: t.faq5_a },
+    { q: t.faq6_q, a: t.faq6_a },
+  ];
 
   return (
     <section id={id} className="py-20 lg:py-28 border-t border-border/60 bg-black/20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">FAQ</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.faq_title}</p>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">
-            Frequently asked questions
+            {t.faq_subtitle}
           </h2>
         </div>
 

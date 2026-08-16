@@ -23,12 +23,14 @@ import { Pagination } from '@/components/ui/Pagination';
 import { ProductStatusBadge } from '@/components/ui/StatusBadge';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { cn, debounce, formatMoney, getErrorMessage } from '@/lib/utils';
 import type { Category, Product } from '@/types';
 
 export default function ProductsPage() {
   const router = useRouter();
   const { success, error } = useToast();
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [total, setTotal] = useState(0);
@@ -58,7 +60,7 @@ export default function ProductsPage() {
       setTotal(list.total);
       setCategories(cats);
     } catch (err) {
-      error('Failed to load products', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -84,19 +86,19 @@ export default function ProductsPage() {
     try {
       const updated = await api.setProductStatus(p.id, p.status === 'active' ? 'inactive' : 'active');
       setProducts((ps) => ps.map((x) => (x.id === updated.id ? updated : x)));
-      success(updated.status === 'active' ? 'Product activated' : 'Product deactivated');
+      success(updated.status === 'active' ? t.products_activate : t.products_deactivate);
     } catch (err) {
-      error('Failed to update status', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     }
   };
 
   const duplicate = async (p: Product) => {
     try {
       await api.duplicateProduct(p.id);
-      success('Product duplicated');
+      success(t.products_duplicate);
       load();
     } catch (err) {
-      error('Failed to duplicate', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     }
   };
 
@@ -105,11 +107,11 @@ export default function ProductsPage() {
     setDeleting(true);
     try {
       await api.deleteProduct(deleteTarget.id);
-      success('Product deleted');
+      success(t.products_delete);
       setDeleteTarget(null);
       load();
     } catch (err) {
-      error('Failed to delete product', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setDeleting(false);
     }
@@ -119,14 +121,14 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Products</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t.products_title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {total} product{total !== 1 ? 's' : ''} in your catalog
+            {total} {t.products_title.toLowerCase()} {t.common_of} {t.dashboard_total_products.toLowerCase()}
           </p>
         </div>
         <Link href="/dashboard/products/new">
           <Button variant="gold">
-            <Plus className="w-4 h-4" /> Add product
+            <Plus className="w-4 h-4" /> {t.products_add}
           </Button>
         </Link>
       </div>
@@ -134,7 +136,7 @@ export default function ProductsPage() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex-1 min-w-[220px] max-w-sm">
           <Input
-            placeholder="Search products…"
+            placeholder={t.products_search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             leftIcon={<Search className="w-4 h-4" />}
@@ -145,9 +147,9 @@ export default function ProductsPage() {
           onChange={(e) => setStatus(e.target.value)}
           className="w-36"
           options={[
-            { value: '', label: 'All statuses' },
-            { value: 'active', label: 'Active' },
-            { value: 'inactive', label: 'Inactive' },
+            { value: '', label: t.products_all },
+            { value: 'active', label: t.products_active },
+            { value: 'inactive', label: t.products_inactive },
           ]}
         />
         <Select
@@ -155,7 +157,7 @@ export default function ProductsPage() {
           onChange={(e) => setCategoryId(e.target.value)}
           className="w-44"
           options={[
-            { value: '', label: 'All categories' },
+            { value: '', label: t.products_all },
             ...categories.map((c) => ({ value: c.id.toString(), label: c.name })),
           ]}
         />
@@ -164,9 +166,9 @@ export default function ProductsPage() {
       {!loading && products.length === 0 ? (
         <EmptyState
           icon={<Package className="w-6 h-6" />}
-          title="No products yet"
-          description="Add your first product to start selling from your bio link."
-          actionLabel="Add your first product"
+          title={t.products_empty_title}
+          description={t.products_empty_desc}
+          actionLabel={t.products_add}
           actionHref="/dashboard/products/new"
         />
       ) : (
@@ -197,7 +199,7 @@ export default function ProductsPage() {
                   <div className="min-w-0">
                     <p className="font-medium truncate">{p.name}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {p.category?.name || 'Uncategorized'} · {p.stock} in stock
+                      {p.category?.name || t.products_category} · {p.stock} {t.dashboard_total_products.toLowerCase()}
                     </p>
                   </div>
                   <div className="relative">
@@ -216,7 +218,7 @@ export default function ProductsPage() {
                             href={`/dashboard/products/${p.id}/edit`}
                             className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm hover:bg-muted"
                           >
-                            <Pencil className="w-3.5 h-3.5" /> Edit
+                            <Pencil className="w-3.5 h-3.5" /> {t.products_edit}
                           </Link>
                           <button
                             onClick={() => {
@@ -230,7 +232,7 @@ export default function ProductsPage() {
                             ) : (
                               <Eye className="w-3.5 h-3.5" />
                             )}
-                            {p.status === 'active' ? 'Deactivate' : 'Activate'}
+                            {p.status === 'active' ? t.products_deactivate : t.products_activate}
                           </button>
                           <button
                             onClick={() => {
@@ -239,7 +241,7 @@ export default function ProductsPage() {
                             }}
                             className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm hover:bg-muted text-left"
                           >
-                            <Copy className="w-3.5 h-3.5" /> Duplicate
+                            <Copy className="w-3.5 h-3.5" /> {t.products_duplicate}
                           </button>
                           <button
                             onClick={() => {
@@ -248,7 +250,7 @@ export default function ProductsPage() {
                             }}
                             className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 text-left"
                           >
-                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                            <Trash2 className="w-3.5 h-3.5" /> {t.products_delete}
                           </button>
                         </div>
                       </>
@@ -279,9 +281,9 @@ export default function ProductsPage() {
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
-        title="Delete product?"
-        description={`"${deleteTarget?.name}" will be permanently removed from your store. This cannot be undone.`}
-        confirmLabel="Delete"
+        title={t.products_delete}
+        description={t.products_empty_desc}
+        confirmLabel={t.common_delete}
         destructive
         loading={deleting}
       />

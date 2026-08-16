@@ -2,27 +2,30 @@
 
 import Link from 'next/link';
 import { Store } from 'lucide-react';
-
-const columns = [
-  {
-    title: 'Product',
-    links: [
-      { name: 'Features', href: '/#features' },
-      { name: 'Pricing', href: '/#pricing' },
-      { name: 'FAQ', href: '/#faq' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { name: 'For sellers', href: '/#how-it-works' },
-      { name: 'Get started', href: '/register' },
-      { name: 'Sign in', href: '/login' },
-    ],
-  },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function Footer() {
+  const { t } = useTranslation();
+
+  const columns = [
+    {
+      title: t.footer_product,
+      links: [
+        { name: t.footer_features, href: '/#features' },
+        { name: t.footer_pricing, href: '/#pricing' },
+        { name: t.footer_faq, href: '/#faq' },
+      ],
+    },
+    {
+      title: t.footer_company,
+      links: [
+        { name: t.footer_for_sellers, href: '/#how-it-works' },
+        { name: t.footer_get_started, href: '/register' },
+        { name: t.footer_sign_in, href: '/login' },
+      ],
+    },
+  ];
+
   return (
     <footer className="border-t border-border bg-black/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -37,8 +40,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground max-w-sm">
-              The premium way to turn your Instagram, TikTok, or Facebook bio link into a
-              beautiful storefront. No code. No monthly fees to start.
+              {t.footer_description}
             </p>
           </div>
           {columns.map((col) => (
@@ -60,8 +62,8 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-10 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} BioStor. All rights reserved.</p>
-          <p className="text-xs text-muted-foreground">Made for modern creators.</p>
+          <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} BioStor. {t.footer_rights}</p>
+          <p className="text-xs text-muted-foreground">{t.footer_tagline}</p>
         </div>
       </div>
     </footer>

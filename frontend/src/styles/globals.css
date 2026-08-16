@@ -166,3 +166,29 @@
     }
   }
 }
+
+/* RTL Support */
+[dir="rtl"] .animate-drawer-in {
+  animation-name: drawerInRtl;
+}
+@keyframes drawerInRtl {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+[dir="rtl"] .lucide-chevron-left {
+  transform: rotate(180deg);
+}
+[dir="rtl"] .lucide-chevron-right {
+  transform: rotate(180deg);
+}
+[dir="rtl"] .lucide-arrow-left {
+  transform: rotate(180deg);
+}
+[dir="rtl"] .lucide-arrow-right {
+  transform: rotate(180deg);
+}

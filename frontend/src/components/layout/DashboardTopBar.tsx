@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, Bell, ExternalLink, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 import { api } from '@/lib/api/client';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Badge';
@@ -15,6 +16,7 @@ interface DashboardTopBarProps {
 
 export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const pathname = usePathname();
   const [unread, setUnread] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,7 +41,7 @@ export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
     };
   }, [pathname]);
 
-  const pageTitle = pathname === '/dashboard' ? 'Dashboard' : '';
+  const pageTitle = pathname === '/dashboard' ? t.dashboard_overview : '';
 
   return (
     <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/85 backdrop-blur-xl">
@@ -71,7 +73,7 @@ export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 border border-border transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5" />
-            View store
+            {t.store_preview}
           </Link>
         )}
 
@@ -113,7 +115,7 @@ export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
                   onClick={() => setMenuOpen(false)}
                   className="block px-3 py-2 rounded-lg text-sm hover:bg-muted"
                 >
-                  Account settings
+                  {t.settings_account}
                 </Link>
                 {storeUrl && (
                   <Link
@@ -122,7 +124,7 @@ export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
                     onClick={() => setMenuOpen(false)}
                     className="block px-3 py-2 rounded-lg text-sm hover:bg-muted"
                   >
-                    Visit my store
+                    {t.store_preview}
                   </Link>
                 )}
                 <button
@@ -132,7 +134,7 @@ export function DashboardTopBar({ onMenuClick }: DashboardTopBarProps) {
                   }}
                   className="w-full text-left px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10"
                 >
-                  Sign out
+                  {t.nav_logout}
                 </button>
               </div>
             </>

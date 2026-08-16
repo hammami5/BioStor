@@ -4,20 +4,23 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, Store } from 'lucide-react';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-
-const links = [
-  { name: 'Features', href: '#features' },
-  { name: 'How it works', href: '#how-it-works' },
-  { name: 'Pricing', href: '#pricing' },
-  { name: 'FAQ', href: '#faq' },
-];
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, loading } = useAuth();
+  const { t } = useTranslation();
+
+  const links = [
+    { name: t.features_title, href: '#features' },
+    { name: t.how_it_works_title, href: '#how-it-works' },
+    { name: t.pricing_title, href: '#pricing' },
+    { name: t.faq_title, href: '#faq' },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -27,7 +30,7 @@ export function Navbar() {
   }, []);
 
   const ctaHref = user ? (user.role === 'super_admin' ? '/admin' : '/dashboard') : '/register';
-  const ctaLabel = user ? 'Go to dashboard' : 'Start free';
+  const ctaLabel = user ? t.nav_dashboard : t.hero_cta;
 
   return (
     <header
@@ -60,25 +63,29 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <LanguageSwitcher variant="compact" />
             {!user && (
               <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-                Sign in
+                {t.nav_login}
               </Link>
             )}
             <Link href={ctaHref}>
               <Button variant="gold" size="md">
-                {loading ? 'Loading…' : ctaLabel}
+                {loading ? t.common_loading : ctaLabel}
               </Button>
             </Link>
           </div>
 
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden p-2 rounded-lg text-foreground hover:bg-muted"
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <LanguageSwitcher variant="compact" />
+            <button
+              onClick={() => setOpen(!open)}
+              className="p-2 rounded-lg text-foreground hover:bg-muted"
+              aria-label="Toggle menu"
+            >
+              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         {open && (
@@ -97,7 +104,7 @@ export function Navbar() {
               {!user && (
                 <Link href="/login" onClick={() => setOpen(false)}>
                   <Button variant="outline" className="w-full">
-                    Sign in
+                    {t.nav_login}
                   </Button>
                 </Link>
               )}

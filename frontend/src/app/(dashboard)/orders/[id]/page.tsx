@@ -12,6 +12,7 @@ import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Input';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { cn, formatDateTime, formatMoney, getErrorMessage } from '@/lib/utils';
 import { ORDER_STATUSES, ORDER_STATUS_LABELS } from '@/types';
 import type { Order } from '@/types';
@@ -20,6 +21,7 @@ export default function OrderDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { success, error } = useToast();
+  const { t } = useTranslation();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState(false);
@@ -32,12 +34,12 @@ export default function OrderDetailPage() {
       setOrder(data);
       setNote(data.internal_note || '');
     } catch (err) {
-      error('Order not found', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
       router.replace('/dashboard/orders');
     } finally {
       setLoading(false);
     }
-  }, [params.id, router, error]);
+  }, [params.id, router, error, t]);
 
   useEffect(() => {
     load();
@@ -48,9 +50,9 @@ export default function OrderDetailPage() {
     try {
       const updated = await api.updateOrderStatus(order!.id, status as Order['status']);
       setOrder(updated);
-      success('Status updated', `Order is now ${ORDER_STATUS_LABELS[updated.status]}.`);
+      success(t.orders_update_status, `${ORDER_STATUS_LABELS[updated.status]}.`);
     } catch (err) {
-      error('Failed to update status', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setUpdatingStatus(false);
     }
@@ -61,9 +63,9 @@ export default function OrderDetailPage() {
     try {
       const updated = await api.updateOrderNote(order!.id, note || null);
       setOrder(updated);
-      success('Note saved');
+      success(t.common_save);
     } catch (err) {
-      error('Failed to save note', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setSavingNote(false);
     }
@@ -92,19 +94,19 @@ export default function OrderDetailPage() {
             href="/dashboard/orders"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-3"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to orders
+            <ArrowLeft className="w-4 h-4" /> {t.common_back}
           </Link>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold tracking-tight">{order.order_number}</h1>
             <OrderStatusBadge status={order.status} />
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            Placed {formatDateTime(order.placed_at)}
+            {t.orders_date} {formatDateTime(order.placed_at)}
           </p>
         </div>
         <div className="w-44">
           <Select
-            label="Update status"
+            label={t.orders_update_status}
             value={order.status}
             onChange={(e) => changeStatus(e.target.value)}
             disabled={updatingStatus}
@@ -115,7 +117,7 @@ export default function OrderDetailPage() {
 
       {order.status === 'cancelled' ? (
         <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400">
-          This order was cancelled.
+          {t.orders_cancelled}
         </div>
       ) : (
         <div className="card-surface p-5">
@@ -156,7 +158,7 @@ export default function OrderDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Items</CardTitle>
+              <CardTitle>{t.orders_items}</CardTitle>
             </CardHeader>
             <CardContent className="px-0 py-0">
               <div className="divide-y divide-border/40">
@@ -187,15 +189,15 @@ export default function OrderDetailPage() {
               </div>
               <div className="px-5 py-4 bg-muted/30 space-y-1.5">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="text-muted-foreground">{t.storefront_subtotal}</span>
                   <span>{formatMoney(order.subtotal, order.currency)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Delivery</span>
+                  <span className="text-muted-foreground">{t.storefront_delivery}</span>
                   <span>{formatMoney(order.delivery_fee, order.currency)}</span>
                 </div>
                 <div className="flex justify-between text-base font-bold pt-1.5 border-t border-border/60">
-                  <span>Total</span>
+                  <span>{t.storefront_total}</span>
                   <span>{formatMoney(order.total, order.currency)}</span>
                 </div>
               </div>
@@ -204,13 +206,13 @@ export default function OrderDetailPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Internal note</CardTitle>
+              <CardTitle>{t.orders_internal_notes}</CardTitle>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="Add a private note about this order (only visible to you)…"
+                placeholder={t.orders_note_placeholder}
                 rows={3}
               />
               <div className="mt-3 flex justify-end">
@@ -220,7 +222,7 @@ export default function OrderDetailPage() {
                   onClick={saveNote}
                   isLoading={savingNote}
                 >
-                  Save note
+                  {t.common_save}
                 </Button>
               </div>
             </CardContent>
@@ -230,7 +232,7 @@ export default function OrderDetailPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Customer</CardTitle>
+              <CardTitle>{t.orders_customer}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3">
@@ -257,7 +259,7 @@ export default function OrderDetailPage() {
           {order.note && (
             <Card>
               <CardHeader>
-                <CardTitle>Customer note</CardTitle>
+                <CardTitle>{t.orders_notes}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-start gap-2.5">

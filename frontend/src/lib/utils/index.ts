@@ -13,6 +13,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatMoney(amount: number, currency = 'USD'): string {
+  if (currency === 'TND') {
+    return `${amount.toFixed(3)} د.ت`;
+  }
   try {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { Input } from '@/components/ui/Input';
 import { Switch } from '@/components/ui/Switch';
 import { Button } from '@/components/ui/Button';
@@ -13,6 +14,7 @@ import { getErrorMessage } from '@/lib/utils';
 import type { Plan } from '@/types';
 
 export default function AdminPlansPage() {
+  const { t } = useTranslation();
   const { success, error } = useToast();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +25,9 @@ export default function AdminPlansPage() {
     api
       .adminPlans()
       .then(setPlans)
-      .catch((err) => error('Failed to load plans', getErrorMessage(err)))
+      .catch((err) => error(t.admin_failed_load_plans, getErrorMessage(err)))
       .finally(() => setLoading(false));
-  }, [error]);
+  }, [error, t.admin_failed_load_plans]);
 
   const savePlan = async (plan: Plan) => {
     const edit = edits[plan.id];
@@ -39,9 +41,9 @@ export default function AdminPlansPage() {
         )
       );
       setEdits((e) => ({ ...e, [plan.id]: {} }));
-      success(`${plan.name} plan updated`);
+      success(`${plan.name} ${t.admin_plan_updated}`);
     } catch (err) {
-      error('Failed to update plan', getErrorMessage(err));
+      error(t.admin_failed_update_plan, getErrorMessage(err));
     } finally {
       setSaving(null);
     }
@@ -60,10 +62,10 @@ export default function AdminPlansPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" /> Plans
+          <Sparkles className="w-6 h-6 text-primary" /> {t.admin_plans}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Adjust pricing, limits, and features for each subscription tier.
+          {t.admin_plans_desc}
         </p>
       </div>
 
@@ -78,13 +80,13 @@ export default function AdminPlansPage() {
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">{plan.name}</h3>
                 <Badge variant={plan.is_active ? 'success' : 'secondary'} dot>
-                  {plan.is_active ? 'Active' : 'Inactive'}
+                  {plan.is_active ? t.admin_header_active : t.admin_inactive}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <Input
-                  label="Monthly price"
+                  label={t.admin_monthly_price}
                   type="number"
                   step="0.01"
                   min="0"
@@ -92,7 +94,7 @@ export default function AdminPlansPage() {
                   onChange={(e) => set({ price_monthly: parseFloat(e.target.value) || 0 })}
                 />
                 <Input
-                  label="Product limit"
+                  label={t.admin_product_limit}
                   type="number"
                   min="0"
                   value={draft.product_limit}
@@ -100,29 +102,29 @@ export default function AdminPlansPage() {
                 />
               </div>
               <Input
-                label="Order limit"
+                label={t.admin_order_limit}
                 type="number"
                 min="0"
                 value={draft.order_limit ?? ''}
                 onChange={(e) => set({ order_limit: e.target.value === '' ? null : parseInt(e.target.value) })}
-                helperText="Leave empty for unlimited"
+                helperText={t.admin_leave_empty_unlimited}
               />
 
               <div className="space-y-2.5 pt-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Custom branding</span>
+                  <span className="text-sm">{t.admin_custom_branding}</span>
                   <Switch checked={draft.custom_branding} onCheckedChange={(v) => set({ custom_branding: v })} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Advanced analytics</span>
+                  <span className="text-sm">{t.admin_advanced_analytics}</span>
                   <Switch checked={draft.advanced_analytics} onCheckedChange={(v) => set({ advanced_analytics: v })} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Priority support</span>
+                  <span className="text-sm">{t.admin_priority_support}</span>
                   <Switch checked={draft.priority_support} onCheckedChange={(v) => set({ priority_support: v })} />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Active</span>
+                  <span className="text-sm">{t.admin_header_active}</span>
                   <Switch checked={draft.is_active} onCheckedChange={(v) => set({ is_active: v })} />
                 </div>
               </div>
@@ -134,7 +136,7 @@ export default function AdminPlansPage() {
                 onClick={() => savePlan(plan)}
                 isLoading={saving === plan.id}
               >
-                {Object.keys(edit).length > 0 ? 'Save changes' : 'Up to date'}
+                {Object.keys(edit).length > 0 ? t.admin_save_changes : t.admin_up_to_date}
               </Button>
             </div>
           );

@@ -8,11 +8,13 @@ import { PublicOnlyRoute } from '@/components/layout/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useAuth } from '@/lib/auth/context';
+import { useTranslation } from '@/lib/i18n';
 import { getErrorMessage } from '@/lib/utils';
 
 export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     full_name: '',
     username: '',
@@ -60,39 +62,39 @@ export default function RegisterPage() {
           </div>
 
           <div className="card-surface p-8">
-            <h1 className="text-2xl font-bold tracking-tight">Create your store</h1>
+            <h1 className="text-2xl font-bold tracking-tight">{t.register_title}</h1>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Free to start. Takes less than a minute.
+              {t.pricing_free}
             </p>
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <Input
-                  label="Full name"
+                  label={t.register_name}
                   required
                   value={form.full_name}
                   onChange={update('full_name')}
                   placeholder="Jane Doe"
                 />
                 <Input
-                  label="Username"
+                  label={t.register_username}
                   required
                   value={form.username}
                   onChange={update('username')}
                   placeholder="janedoe"
-                  helperText="Letters, numbers, dots and dashes"
+                  helperText={t.validation_min_length}
                 />
               </div>
               <Input
-                label="Store name"
+                label={t.register_store_name}
                 required
                 value={form.store_name}
                 onChange={update('store_name')}
                 placeholder="Jane's Boutique"
-                helperText="Your public storefront name"
+                helperText={t.store_description}
               />
               <Input
-                label="Email"
+                label={t.register_email}
                 type="email"
                 required
                 autoComplete="email"
@@ -101,13 +103,13 @@ export default function RegisterPage() {
                 placeholder="you@example.com"
               />
               <Input
-                label="Password"
+                label={t.register_password}
                 type="password"
                 required
                 autoComplete="new-password"
                 value={form.password}
                 onChange={update('password')}
-                placeholder="At least 8 characters"
+                placeholder={t.validation_min_length}
               />
 
               {error && (
@@ -117,14 +119,14 @@ export default function RegisterPage() {
               )}
 
               <Button type="submit" variant="gold" className="w-full" size="lg" isLoading={loading}>
-                Create my store
+                {t.register_button}
               </Button>
             </form>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
+              {t.register_has_account}{' '}
               <Link href="/login" className="font-medium text-primary hover:underline">
-                Sign in
+                {t.register_login_link}
               </Link>
             </p>
           </div>

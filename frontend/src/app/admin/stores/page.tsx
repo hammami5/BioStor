@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Store } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { Input } from '@/components/ui/Input';
 import { DataTable } from '@/components/ui/DataTable';
 import { Badge } from '@/components/ui/Badge';
@@ -13,6 +14,7 @@ import { debounce, formatDate, getErrorMessage } from '@/lib/utils';
 import type { AdminStore } from '@/types';
 
 export default function AdminStoresPage() {
+  const { t } = useTranslation();
   const { success, error } = useToast();
   const [stores, setStores] = useState<AdminStore[]>([]);
   const [search, setSearch] = useState('');
@@ -24,7 +26,7 @@ export default function AdminStoresPage() {
     try {
       setStores(await api.adminStores({ search: search || undefined }));
     } catch (err) {
-      error('Failed to load stores', getErrorMessage(err));
+      error(t.admin_failed_load_stores, getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -42,10 +44,10 @@ export default function AdminStoresPage() {
     setBusyId(store.id);
     try {
       await api.suspendStore(store.id, !store.is_suspended);
-      success(store.is_suspended ? 'Store reactivated' : 'Store suspended');
+      success(store.is_suspended ? t.admin_store_reactivated : t.admin_store_suspended);
       load();
     } catch (err) {
-      error('Action failed', getErrorMessage(err));
+      error(t.admin_action_failed, getErrorMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -54,13 +56,13 @@ export default function AdminStoresPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Stores</h1>
-        <p className="mt-1 text-sm text-muted-foreground">All stores on the platform.</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t.admin_stores}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t.admin_stores_desc}</p>
       </div>
 
       <div className="max-w-sm">
         <Input
-          placeholder="Search stores…"
+          placeholder={t.admin_search_stores}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           leftIcon={<Search className="w-4 h-4" />}
@@ -74,13 +76,13 @@ export default function AdminStoresPage() {
           rowKey={(s) => s.id}
           empty={
             <div className="py-12">
-              <EmptyState compact icon={<Store className="w-6 h-6" />} title="No stores found" />
+              <EmptyState compact icon={<Store className="w-6 h-6" />} title={t.admin_no_stores} />
             </div>
           }
           columns={[
             {
               key: 'store',
-              header: 'Store',
+              header: t.admin_header_store,
               cell: (s) => (
                 <div>
                   <p className="font-medium">{s.store_name}</p>
@@ -88,27 +90,27 @@ export default function AdminStoresPage() {
                 </div>
               ),
             },
-            { key: 'owner', header: 'Owner', cell: (s) => <div><p>{s.owner_name}</p><p className="text-xs text-muted-foreground">{s.owner_email}</p></div>, hideBelow: 'sm' },
-            { key: 'products', header: 'Products', cell: (s) => <span>{s.product_count}</span>, hideBelow: 'md' },
-            { key: 'orders', header: 'Orders', cell: (s) => <span>{s.order_count}</span>, hideBelow: 'md' },
+            { key: 'owner', header: t.admin_header_owner, cell: (s) => <div><p>{s.owner_name}</p><p className="text-xs text-muted-foreground">{s.owner_email}</p></div>, hideBelow: 'sm' },
+            { key: 'products', header: t.admin_header_products, cell: (s) => <span>{s.product_count}</span>, hideBelow: 'md' },
+            { key: 'orders', header: t.admin_header_orders, cell: (s) => <span>{s.order_count}</span>, hideBelow: 'md' },
             {
               key: 'plan',
-              header: 'Plan',
+              header: t.admin_header_plan,
               cell: (s) => <Badge variant={s.plan_code === 'free' ? 'secondary' : 'gold'} className="capitalize">{s.plan_code}</Badge>,
               hideBelow: 'lg',
             },
             {
               key: 'created',
-              header: 'Created',
+              header: t.admin_header_created,
               cell: (s) => <span className="text-muted-foreground">{formatDate(s.created_at)}</span>,
               hideBelow: 'xl',
             },
             {
               key: 'status',
-              header: 'Status',
+              header: t.admin_header_status,
               cell: (s) => (
                 <Badge variant={s.is_suspended ? 'destructive' : s.is_active ? 'success' : 'warning'} dot>
-                  {s.is_suspended ? 'Suspended' : s.is_active ? 'Active' : 'Inactive'}
+                  {s.is_suspended ? t.admin_suspended : s.is_active ? t.admin_header_active : t.admin_inactive}
                 </Badge>
               ),
             },
@@ -125,7 +127,7 @@ export default function AdminStoresPage() {
                   }}
                   isLoading={busyId === s.id}
                 >
-                  {s.is_suspended ? 'Reactivate' : 'Suspend'}
+                  {s.is_suspended ? t.admin_reactivate : t.admin_suspend}
                 </Button>
               ),
             },

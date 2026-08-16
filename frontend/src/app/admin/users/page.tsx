@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Search, Users } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { Input } from '@/components/ui/Input';
 import { DataTable } from '@/components/ui/DataTable';
 import { Badge } from '@/components/ui/Badge';
@@ -13,6 +14,7 @@ import { debounce, formatDate, getErrorMessage } from '@/lib/utils';
 import type { AdminUser } from '@/types';
 
 export default function AdminUsersPage() {
+  const { t } = useTranslation();
   const { error } = useToast();
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [search, setSearch] = useState('');
@@ -23,7 +25,7 @@ export default function AdminUsersPage() {
     try {
       setUsers(await api.adminUsers({ search: search || undefined }));
     } catch (err) {
-      error('Failed to load users', getErrorMessage(err));
+      error(t.admin_failed_load_users, getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -40,13 +42,13 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Everyone registered on BioStor.</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t.admin_users}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t.admin_users_desc}</p>
       </div>
 
       <div className="max-w-sm">
         <Input
-          placeholder="Search users…"
+          placeholder={t.admin_search_users}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           leftIcon={<Search className="w-4 h-4" />}
@@ -60,13 +62,13 @@ export default function AdminUsersPage() {
           rowKey={(u) => u.id}
           empty={
             <div className="py-12">
-              <EmptyState compact icon={<Users className="w-6 h-6" />} title="No users found" />
+              <EmptyState compact icon={<Users className="w-6 h-6" />} title={t.admin_no_users} />
             </div>
           }
           columns={[
             {
               key: 'user',
-              header: 'User',
+              header: t.admin_header_user,
               cell: (u) => (
                 <div className="flex items-center gap-3">
                   <Avatar size="sm" fallback={u.full_name.charAt(0).toUpperCase()} className="bg-primary/15 text-primary" />
@@ -77,42 +79,42 @@ export default function AdminUsersPage() {
                 </div>
               ),
             },
-            { key: 'email', header: 'Email', cell: (u) => <span>{u.email}</span>, hideBelow: 'sm' },
+            { key: 'email', header: t.admin_header_email, cell: (u) => <span>{u.email}</span>, hideBelow: 'sm' },
             {
               key: 'role',
-              header: 'Role',
+              header: t.admin_header_role,
               cell: (u) => (
                 <Badge variant={u.role === 'super_admin' ? 'destructive' : 'secondary'}>{u.role}</Badge>
               ),
             },
             {
               key: 'verified',
-              header: 'Verified',
+              header: t.admin_header_verified,
               cell: (u) => (
                 <Badge variant={u.is_verified ? 'success' : 'warning'} dot>
-                  {u.is_verified ? 'Yes' : 'No'}
+                  {u.is_verified ? t.common_yes : t.common_no}
                 </Badge>
               ),
               hideBelow: 'md',
             },
             {
               key: 'store',
-              header: 'Store',
+              header: t.admin_header_store,
               cell: (u) => <span className="text-muted-foreground">{u.store_name || '—'}</span>,
               hideBelow: 'lg',
             },
             {
               key: 'created',
-              header: 'Joined',
+              header: t.admin_header_joined,
               cell: (u) => <span className="text-muted-foreground">{formatDate(u.created_at)}</span>,
               hideBelow: 'xl',
             },
             {
               key: 'active',
-              header: 'Active',
+              header: t.admin_header_active,
               cell: (u) => (
                 <Badge variant={u.is_active ? 'success' : 'destructive'} dot>
-                  {u.is_active ? 'Yes' : 'No'}
+                  {u.is_active ? t.common_yes : t.common_no}
                 </Badge>
               ),
             },

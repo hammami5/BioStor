@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, Package, Clock, Home } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 import { formatMoney } from '@/lib/utils';
 import type { OrderConfirmation } from '@/types';
 
@@ -12,6 +13,7 @@ export default function CheckoutSuccessPage({
   params: { slug: string };
 }) {
   const { slug } = params;
+  const { t } = useTranslation();
   const confirmation = useMemo<OrderConfirmation | null>(() => {
     if (typeof window === 'undefined') return null;
     try {
@@ -26,12 +28,12 @@ export default function CheckoutSuccessPage({
   if (!confirmation) {
     return (
       <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center px-6 text-center">
-        <p className="text-zinc-400 text-sm">No recent order found.</p>
+        <p className="text-zinc-400 text-sm">{t.common_no_results}</p>
         <Link
           href={`/store/${slug}`}
           className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-zinc-800 text-white text-sm font-medium"
         >
-          <Home className="w-4 h-4" /> Back to store
+          <Home className="w-4 h-4" /> {t.storefront_back_to_store}
         </Link>
       </div>
     );
@@ -45,10 +47,10 @@ export default function CheckoutSuccessPage({
             <CheckCircle2 className="w-9 h-9 text-emerald-400" />
           </div>
           <h1 className="mt-4 text-2xl font-bold text-white">
-            Order confirmed{confirmation.customer_name ? `, ${confirmation.customer_name}` : ''}!
+            {t.storefront_order_confirmed}{confirmation.customer_name ? `, ${confirmation.customer_name}` : ''}!
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
-            We&apos;ve received your order and will contact you shortly to arrange delivery.
+            {t.storefront_order_message}
           </p>
         </div>
 
@@ -86,19 +88,19 @@ export default function CheckoutSuccessPage({
 
           <div className="px-5 py-4 border-t border-zinc-800 space-y-1.5">
             <div className="flex justify-between text-sm text-zinc-400">
-              <span>Subtotal</span>
+              <span>{t.storefront_subtotal}</span>
               <span>{formatMoney(confirmation.subtotal, confirmation.currency)}</span>
             </div>
             <div className="flex justify-between text-sm text-zinc-400">
-              <span>Delivery fee</span>
+              <span>{t.storefront_delivery}</span>
               <span>
                 {confirmation.delivery_fee > 0
                   ? formatMoney(confirmation.delivery_fee, confirmation.currency)
-                  : 'Free'}
+                  : t.common_free}
               </span>
             </div>
             <div className="flex justify-between items-center pt-1">
-              <span className="text-sm font-medium text-white">Total</span>
+              <span className="text-sm font-medium text-white">{t.storefront_total}</span>
               <span className="text-lg font-bold text-white">
                 {formatMoney(confirmation.total, confirmation.currency)}
               </span>
@@ -109,7 +111,7 @@ export default function CheckoutSuccessPage({
         <div className="mt-6 flex items-start gap-2.5 px-1">
           <Clock className="w-4 h-4 text-zinc-500 mt-0.5 flex-shrink-0" />
           <p className="text-xs text-zinc-500">
-            Keep an eye on your phone for a confirmation message from the store.
+            {t.storefront_order_message}
           </p>
         </div>
 
@@ -117,7 +119,7 @@ export default function CheckoutSuccessPage({
           href={`/store/${slug}`}
           className="mt-8 block text-center py-3.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm font-bold"
         >
-          Continue shopping
+          {t.storefront_continue_shopping}
         </Link>
       </div>
     </div>

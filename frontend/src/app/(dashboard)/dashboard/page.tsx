@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { api } from '@/lib/api/client';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { StatCard } from '@/components/ui/PageHeader';
 import { LineChart } from '@/components/charts';
@@ -24,6 +25,7 @@ import type { DashboardOverview, Order, TimePoint } from '@/types';
 
 export default function DashboardPage() {
   const { error: toastError } = useToast();
+  const { t } = useTranslation();
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
   const [revenue, setRevenue] = useState<TimePoint[]>([]);
   const [orders, setOrders] = useState<TimePoint[]>([]);
@@ -44,13 +46,13 @@ export default function DashboardPage() {
         setOrders(ord);
         setRecentOrders(recent.items);
       } catch (err) {
-        toastError('Failed to load dashboard', getErrorMessage(err));
+        toastError(t.common_error, getErrorMessage(err));
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, [toastError]);
+  }, [toastError, t]);
 
   if (loading) {
     return (
@@ -74,28 +76,28 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Total revenue"
+          label={t.dashboard_total_revenue}
           value={formatMoney(overview?.total_revenue || 0, currency)}
           icon={<DollarSign className="w-5 h-5" />}
-          hint="All time"
+          hint={t.analytics_today}
         />
         <StatCard
-          label="Total orders"
+          label={t.dashboard_total_orders}
           value={String(overview?.total_orders || 0)}
           icon={<ShoppingCart className="w-5 h-5" />}
-          hint={`${overview?.today_orders || 0} today`}
+          hint={`${overview?.today_orders || 0} ${t.dashboard_today_orders}`}
         />
         <StatCard
-          label="Products"
+          label={t.dashboard_total_products}
           value={String(overview?.total_products || 0)}
           icon={<Package className="w-5 h-5" />}
-          hint={`${overview?.low_stock_count || 0} low stock`}
+          hint={`${overview?.low_stock_count || 0} ${t.dashboard_low_stock}`}
         />
         <StatCard
-          label="Customers"
+          label={t.dashboard_total_customers}
           value={String(overview?.total_customers || 0)}
           icon={<Users className="w-5 h-5" />}
-          hint={`${overview?.pending_orders || 0} pending orders`}
+          hint={`${overview?.pending_orders || 0} ${t.dashboard_pending_orders}`}
         />
       </div>
 
@@ -104,7 +106,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-amber-400 hover:bg-amber-500/15 transition-colors">
             <AlertTriangle className="w-4 h-4 flex-shrink-0" />
             <span className="flex-1">
-              {overview.low_stock_count} product{overview.low_stock_count > 1 ? 's are' : ' is'} running low on stock.
+              {overview.low_stock_count} {t.dashboard_low_stock}
             </span>
             <ArrowUpRight className="w-4 h-4" />
           </div>
@@ -115,8 +117,8 @@ export default function DashboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader>
             <div>
-              <CardTitle>Revenue</CardTitle>
-              <p className="text-sm text-muted-foreground mt-0.5">Last 30 days</p>
+              <CardTitle>{t.analytics_revenue}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-0.5">{t.analytics_30d}</p>
             </div>
           </CardHeader>
           <CardContent>
@@ -127,8 +129,8 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Orders</CardTitle>
-              <p className="text-sm text-muted-foreground mt-0.5">Last 30 days</p>
+              <CardTitle>{t.orders_title}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-0.5">{t.analytics_30d}</p>
             </div>
             <TrendingUp className="w-4 h-4 text-primary" />
           </CardHeader>
@@ -146,14 +148,14 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <div>
-            <CardTitle>Recent orders</CardTitle>
-            <p className="text-sm text-muted-foreground mt-0.5">Latest activity</p>
+            <CardTitle>{t.dashboard_recent_orders}</CardTitle>
+            <p className="text-sm text-muted-foreground mt-0.5">{t.dashboard_revenue_over_time}</p>
           </div>
           <Link
             href="/dashboard/orders"
             className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1"
           >
-            View all <ArrowUpRight className="w-3.5 h-3.5" />
+            {t.dashboard_view_all} <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </CardHeader>
         <CardContent className="px-0 py-0">
@@ -161,7 +163,7 @@ export default function DashboardPage() {
             <div className="px-5 py-12 text-center">
               <Bell className="w-8 h-8 text-muted-foreground/40 mx-auto" />
               <p className="mt-3 text-sm text-muted-foreground">
-                No orders yet. Share your store link and your first order will appear here.
+                {t.orders_empty_desc}
               </p>
             </div>
           ) : (

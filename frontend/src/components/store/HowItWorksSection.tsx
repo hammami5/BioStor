@@ -3,41 +3,44 @@
 import Link from 'next/link';
 import { UserPlus, Image, Megaphone, PackageCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-
-const steps = [
-  {
-    icon: UserPlus,
-    title: 'Create your account',
-    description: 'Sign up in seconds with your email and a store name. Your own store is created instantly.',
-  },
-  {
-    icon: Image,
-    title: 'Add your products',
-    description: 'Photos, prices, variants and descriptions. Organize with categories and mark bestsellers.',
-  },
-  {
-    icon: Megaphone,
-    title: 'Set your link',
-    description: 'Update your Instagram, TikTok or Facebook bio to point at your BioStor link.',
-  },
-  {
-    icon: PackageCheck,
-    title: 'Start selling',
-    description: 'Customers browse, checkout, and you get notified the moment an order lands.',
-  },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function HowItWorksSection({ id }: { id?: string }) {
+  const { t } = useTranslation();
+
+  const steps = [
+    {
+      icon: UserPlus,
+      title: t.step1_title,
+      description: t.step1_desc,
+    },
+    {
+      icon: Image,
+      title: t.step2_title,
+      description: t.step2_desc,
+    },
+    {
+      icon: Megaphone,
+      title: t.step3_title,
+      description: t.step3_desc,
+    },
+    {
+      icon: PackageCheck,
+      title: t.step4_title,
+      description: t.step4_desc,
+    },
+  ];
+
   return (
     <section id={id} className="py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">How it works</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.how_it_works_subtitle}</p>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-balance">
-            Live in under 5 minutes
+            {t.how_it_works_title}
           </h2>
           <p className="mt-4 text-muted-foreground text-lg">
-            From zero to your first sale — no technical skills required.
+            {t.how_it_works_desc}
           </p>
         </div>
 
@@ -64,7 +67,7 @@ export function HowItWorksSection({ id }: { id?: string }) {
         <div className="mt-12 text-center">
           <Link href="/register">
             <Button variant="gold" size="lg">
-              Get started — it&apos;s free
+              {t.how_it_works_cta}
             </Button>
           </Link>
         </div>

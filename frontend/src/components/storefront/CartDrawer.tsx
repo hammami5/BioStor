@@ -7,6 +7,7 @@ import { useCartStore, itemKey, useCartTotals } from '@/store/cart';
 import { formatMoney, resolveImageUrl } from '@/lib/utils';
 import type { StoreSettings } from '@/types';
 import { accentButton } from './utils';
+import { useTranslation } from '@/lib/i18n';
 
 interface CartButtonProps {
   settings?: StoreSettings;
@@ -18,6 +19,7 @@ export function CartButton({ settings, storeSlug, isLight }: CartButtonProps) {
   const [open, setOpen] = useState(false);
   const { count, subtotal } = useCartTotals();
   const currency = settings?.currency || 'USD';
+  const { t } = useTranslation();
 
   return (
     <>
@@ -29,13 +31,13 @@ export function CartButton({ settings, storeSlug, isLight }: CartButtonProps) {
         <ShoppingBag className="w-5 h-5" />
         {count > 0 ? (
           <>
-            <span>View cart · {count}</span>
+            <span>{t.storefront_cart} · {count}</span>
             <span className="px-2 py-0.5 rounded-full text-xs" style={{ background: 'rgba(0,0,0,0.2)' }}>
               {formatMoney(subtotal, currency)}
             </span>
           </>
         ) : (
-          <span>Cart</span>
+          <span>{t.storefront_cart}</span>
         )}
       </button>
 
@@ -45,7 +47,7 @@ export function CartButton({ settings, storeSlug, isLight }: CartButtonProps) {
           <aside className="absolute right-0 top-0 h-full w-full max-w-md bg-zinc-900 animate-drawer-in flex flex-col">
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <ShoppingBag className="w-5 h-5" /> Your cart
+                <ShoppingBag className="w-5 h-5" /> {t.storefront_cart}
               </h2>
               <button onClick={() => setOpen(false)} className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-800">
                 <X className="w-5 h-5" />
@@ -57,15 +59,15 @@ export function CartButton({ settings, storeSlug, isLight }: CartButtonProps) {
             {count > 0 && (
               <div className="px-5 py-4 border-t border-zinc-800 space-y-3">
                 <div className="flex items-center justify-between text-sm text-zinc-400">
-                  <span>Delivery fee</span>
+                  <span>{t.storefront_delivery}</span>
                   <span>
                     {settings && settings.delivery_fee > 0
                       ? formatMoney(settings.delivery_fee, currency)
-                      : 'Free'}
+                      : t.common_free}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-white">
-                  <span className="font-medium">Total</span>
+                  <span className="font-medium">{t.storefront_total}</span>
                   <span className="text-xl font-bold">
                     {formatMoney(subtotal + (settings?.delivery_fee || 0), currency)}
                   </span>
@@ -76,7 +78,7 @@ export function CartButton({ settings, storeSlug, isLight }: CartButtonProps) {
                   className="block text-center py-3.5 rounded-xl text-white font-bold text-sm active:scale-[0.98] transition-transform"
                   style={accentButton(settings)}
                 >
-                  Checkout
+                  {t.storefront_checkout}
                 </Link>
               </div>
             )}
@@ -102,6 +104,7 @@ function CartItems({
   const setQuantity = useCartStore((s) => s.setQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
   const currency = settings?.currency || 'USD';
+  const { t } = useTranslation();
 
   if (items.length === 0) {
     return (
@@ -109,14 +112,14 @@ function CartItems({
         <div className="w-16 h-16 rounded-full bg-zinc-800 flex items-center justify-center">
           <ShoppingBag className="w-7 h-7 text-zinc-500" />
         </div>
-        <p className="text-zinc-400 text-sm">Your cart is empty.</p>
+        <p className="text-zinc-400 text-sm">{t.storefront_cart_empty_message}</p>
         <Link
           href={`/store/${storeSlug}`}
           onClick={onClose}
           className="text-sm font-medium underline"
           style={{ color: settings?.accent_color || '#d4af37' }}
         >
-          Browse products
+          {t.storefront_continue_shopping}
         </Link>
       </div>
     );

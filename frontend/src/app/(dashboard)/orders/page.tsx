@@ -11,6 +11,7 @@ import { Pagination } from '@/components/ui/Pagination';
 import { OrderStatusBadge } from '@/components/ui/StatusBadge';
 import { DataTable } from '@/components/ui/DataTable';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { debounce, formatDateTime, formatMoney, getErrorMessage } from '@/lib/utils';
 import { ORDER_STATUSES, ORDER_STATUS_LABELS } from '@/types';
 import type { Order } from '@/types';
@@ -18,6 +19,7 @@ import type { Order } from '@/types';
 export default function OrdersPage() {
   const router = useRouter();
   const { error } = useToast();
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -37,7 +39,7 @@ export default function OrdersPage() {
       setOrders(data.items);
       setTotal(data.total);
     } catch (err) {
-      error('Failed to load orders', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -62,16 +64,16 @@ export default function OrdersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Orders</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t.orders_title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {total} order{total !== 1 ? 's' : ''} received
+          {total} {t.orders_title.toLowerCase()} {t.common_of} {t.dashboard_total_orders.toLowerCase()}
         </p>
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex-1 min-w-[220px] max-w-sm">
           <Input
-            placeholder="Search by customer or order #…"
+            placeholder={t.orders_search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             leftIcon={<Search className="w-4 h-4" />}
@@ -82,7 +84,7 @@ export default function OrdersPage() {
           onChange={(e) => setStatus(e.target.value)}
           className="w-40"
           options={[
-            { value: '', label: 'All statuses' },
+            { value: '', label: t.orders_all },
             ...ORDER_STATUSES.map((s) => ({ value: s, label: ORDER_STATUS_LABELS[s] })),
           ]}
         />
@@ -99,15 +101,15 @@ export default function OrdersPage() {
               <EmptyState
                 compact
                 icon={<ShoppingCart className="w-6 h-6" />}
-                title="No orders found"
-                description="Orders placed from your store link will appear here."
+                title={t.orders_empty_title}
+                description={t.orders_empty_desc}
               />
             </div>
           }
           columns={[
             {
               key: 'order',
-              header: 'Order',
+              header: t.orders_title,
               cell: (o) => (
                 <div>
                   <p className="font-medium">{o.order_number}</p>
@@ -115,17 +117,17 @@ export default function OrdersPage() {
                 </div>
               ),
             },
-            { key: 'customer', header: 'Customer', cell: (o) => <span className="font-medium">{o.customer_name}</span>, hideBelow: 'sm' },
+            { key: 'customer', header: t.orders_customer, cell: (o) => <span className="font-medium">{o.customer_name}</span>, hideBelow: 'sm' },
             {
               key: 'items',
-              header: 'Items',
+              header: t.orders_items,
               cell: (o) => <span>{o.items?.length ?? '-'}</span>,
               hideBelow: 'md',
             },
-            { key: 'status', header: 'Status', cell: (o) => <OrderStatusBadge status={o.status} /> },
+            { key: 'status', header: t.orders_status, cell: (o) => <OrderStatusBadge status={o.status} /> },
             {
               key: 'total',
-              header: 'Total',
+              header: t.orders_total,
               cell: (o) => <span className="font-semibold">{formatMoney(o.total, o.currency)}</span>,
               className: 'text-right',
             },

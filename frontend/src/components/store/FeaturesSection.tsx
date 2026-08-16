@@ -1,58 +1,54 @@
 'use client';
 
 import { Smartphone, Package, Palette, BarChart3, MessageSquare, Globe } from 'lucide-react';
-
-const features = [
-  {
-    icon: Smartphone,
-    title: 'Mobile-first storefront',
-    description:
-      'A store that looks stunning on any phone. Your followers tap your link and land straight on a store built to convert.',
-  },
-  {
-    icon: Palette,
-    title: 'Your brand, your look',
-    description:
-      'Custom colors, button styles, and your logo. Match your aesthetic and make your store unmistakably yours.',
-  },
-  {
-    icon: Package,
-    title: 'Products & variants',
-    description:
-      'Add products in seconds — sizes, colors, pricing, stock. Organize with categories and highlight bestsellers.',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Orders without friction',
-    description:
-      'Customers checkout by message-style forms. No accounts, no clutter. Orders arrive to you instantly.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Real-time analytics',
-    description:
-      'Revenue, orders, best sellers and conversion — see what works and double down on it.',
-  },
-  {
-    icon: Globe,
-    title: 'One link everywhere',
-    description:
-      'Point your Instagram, TikTok, or Facebook bio link to your store. Every follower becomes a potential customer.',
-  },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function FeaturesSection({ id }: { id?: string }) {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: Smartphone,
+      title: t.feature1_title,
+      description: t.feature1_desc,
+    },
+    {
+      icon: Palette,
+      title: t.feature2_title,
+      description: t.feature2_desc,
+    },
+    {
+      icon: Package,
+      title: t.feature3_title,
+      description: t.feature3_desc,
+    },
+    {
+      icon: MessageSquare,
+      title: t.feature4_title,
+      description: t.feature4_desc,
+    },
+    {
+      icon: BarChart3,
+      title: t.feature5_title,
+      description: t.feature5_desc,
+    },
+    {
+      icon: Globe,
+      title: t.feature6_title,
+      description: t.feature6_desc,
+    },
+  ];
+
   return (
     <section id={id} className="py-20 lg:py-28 border-t border-border/60 bg-black/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">Why BioStor</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{t.features_subtitle}</p>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-balance">
-            Everything you need to sell from your bio
+            {t.features_title}
           </h2>
           <p className="mt-4 text-muted-foreground text-lg">
-            Built for creators, influencers, and small brands who want a real storefront — without
-            the complexity of traditional ecommerce.
+            {t.features_desc}
           </p>
         </div>
 

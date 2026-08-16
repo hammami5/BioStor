@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
+import { useTranslation } from '@/lib/i18n';
 import { cn, formatRelative, getErrorMessage } from '@/lib/utils';
 import type { Notification } from '@/types';
 
@@ -19,6 +20,7 @@ const TYPE_ICON = {
 
 export default function NotificationsPage() {
   const { success, error } = useToast();
+  const { t } = useTranslation();
   const [items, setItems] = useState<Notification[]>([]);
   const [unread, setUnread] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -30,9 +32,9 @@ export default function NotificationsPage() {
         setItems(data.items);
         setUnread(data.unread_count);
       })
-      .catch((err) => error('Failed to load notifications', getErrorMessage(err)))
+      .catch((err) => error(t.common_error, getErrorMessage(err)))
       .finally(() => setLoading(false));
-  }, [error]);
+  }, [error, t]);
 
   const markRead = async (id: number) => {
     try {
@@ -49,9 +51,9 @@ export default function NotificationsPage() {
       await api.markAllNotificationsRead();
       setItems((items) => items.map((n) => ({ ...n, is_read: true })));
       setUnread(0);
-      success('All notifications marked as read');
+      success(t.notifications_mark_all_read);
     } catch (err) {
-      error('Failed to update notifications', getErrorMessage(err));
+      error(t.common_error, getErrorMessage(err));
     }
   };
 
@@ -70,14 +72,14 @@ export default function NotificationsPage() {
     <div className="space-y-6 max-w-3xl">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
+          <h1 className="text-2xl font-bold tracking-tight">{t.notifications_title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {unread > 0 ? `${unread} unread` : 'You’re all caught up'}
+            {unread > 0 ? `${unread} ${t.notifications_title.toLowerCase()}` : t.notifications_empty}
           </p>
         </div>
         {unread > 0 && (
           <Button variant="outline" size="sm" onClick={markAll}>
-            <CheckCheck className="w-4 h-4" /> Mark all read
+            <CheckCheck className="w-4 h-4" /> {t.notifications_mark_all_read}
           </Button>
         )}
       </div>
@@ -85,8 +87,8 @@ export default function NotificationsPage() {
       {items.length === 0 ? (
         <EmptyState
           icon={<Bell className="w-6 h-6" />}
-          title="No notifications"
-          description="New order, order status, and low stock alerts will appear here."
+          title={t.notifications_empty}
+          description={t.notifications_new_order}
         />
       ) : (
         <div className="card-surface divide-y divide-border/40">

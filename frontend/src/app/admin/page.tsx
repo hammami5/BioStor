@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Users, Store, ShoppingCart, DollarSign, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api/client';
+import { useTranslation } from '@/lib/i18n';
 import { StatCard } from '@/components/ui/PageHeader';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -12,6 +13,7 @@ import { formatMoney, getErrorMessage } from '@/lib/utils';
 import type { AdminStats } from '@/types';
 
 export default function AdminDashboardPage() {
+  const { t } = useTranslation();
   const { error } = useToast();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,9 +22,9 @@ export default function AdminDashboardPage() {
     api
       .adminStats()
       .then(setStats)
-      .catch((err) => error('Failed to load stats', getErrorMessage(err)))
+      .catch((err) => error(t.admin_failed_load_stats, getErrorMessage(err)))
       .finally(() => setLoading(false));
-  }, [error]);
+  }, [error, t.admin_failed_load_stats]);
 
   if (loading || !stats) {
     return (
@@ -38,18 +40,18 @@ export default function AdminDashboardPage() {
   }
 
   const cards = [
-    { label: 'Users', value: String(stats.total_users), icon: <Users className="w-5 h-5" />, href: '/admin/users' },
-    { label: 'Active stores', value: String(stats.active_stores), icon: <Store className="w-5 h-5" />, href: '/admin/stores' },
-    { label: 'Orders', value: String(stats.total_orders), icon: <ShoppingCart className="w-5 h-5" />, href: '/admin/orders' },
-    { label: 'Platform revenue', value: formatMoney(stats.platform_revenue), icon: <DollarSign className="w-5 h-5" />, href: '/admin/subscriptions' },
+    { label: t.admin_users, value: String(stats.total_users), icon: <Users className="w-5 h-5" />, href: '/admin/users' },
+    { label: t.admin_active_stores, value: String(stats.active_stores), icon: <Store className="w-5 h-5" />, href: '/admin/stores' },
+    { label: t.admin_orders, value: String(stats.total_orders), icon: <ShoppingCart className="w-5 h-5" />, href: '/admin/orders' },
+    { label: t.admin_revenue, value: formatMoney(stats.platform_revenue), icon: <DollarSign className="w-5 h-5" />, href: '/admin/subscriptions' },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Platform overview</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t.admin_platform_overview}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {stats.new_users_30d} new users in the last 30 days · {stats.recent_orders} recent orders
+          {stats.new_users_30d} {t.admin_new_users_30d} · {stats.recent_orders} {t.admin_recent_orders_count}
         </p>
       </div>
 
@@ -67,13 +69,13 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Subscriptions</CardTitle>
+              <CardTitle>{t.admin_subscriptions}</CardTitle>
               <p className="text-sm text-muted-foreground mt-0.5">
-                {stats.active_subscriptions} active
+                {stats.active_subscriptions} {t.admin_active_count}
               </p>
             </div>
             <Link href="/admin/subscriptions" className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1">
-              Manage <ArrowRight className="w-3.5 h-3.5" />
+              {t.common_manage} <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </CardHeader>
           <CardContent>
@@ -91,14 +93,14 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader>
             <div>
-              <CardTitle>Quick actions</CardTitle>
+              <CardTitle>{t.admin_quick_actions}</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-2">
             {[
-              { label: 'Review stores', href: '/admin/stores', desc: 'Check store activity and suspend violators.' },
-              { label: 'Manage plans', href: '/admin/plans', desc: 'Adjust pricing, limits and features.' },
-              { label: 'Browse orders', href: '/admin/orders', desc: 'Monitor orders across all stores.' },
+              { label: t.admin_review_stores, href: '/admin/stores', desc: t.admin_review_stores_desc },
+              { label: t.admin_manage_plans, href: '/admin/plans', desc: t.admin_manage_plans_desc },
+              { label: t.admin_browse_orders, href: '/admin/orders', desc: t.admin_browse_orders_desc },
             ].map((a) => (
               <Link
                 key={a.href}
