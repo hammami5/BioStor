@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { CheckCircle2, AlertTriangle, Info, XCircle, X } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -25,6 +26,7 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 let toastId = 0;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t: translations } = useTranslation();
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const remove = useCallback((id: number) => {
@@ -73,7 +75,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <button
               onClick={() => remove(t.id)}
               className="p-1 text-muted-foreground hover:text-foreground rounded-md"
-              aria-label="Dismiss"
+              aria-label={translations.toast_dismiss}
             >
               <X className="w-4 h-4" />
             </button>

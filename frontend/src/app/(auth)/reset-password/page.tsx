@@ -9,8 +9,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { api } from '@/lib/api/client';
 import { getErrorMessage } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 function ResetPasswordContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token') || '';
@@ -24,11 +26,11 @@ function ResetPasswordContent() {
     e.preventDefault();
     setError('');
     if (password.length < 8) {
-      setError('Password must be at least 8 characters.');
+      setError(t.reset_password_min_error);
       return;
     }
     if (password !== confirm) {
-      setError('Passwords do not match.');
+      setError(t.reset_passwords_no_match);
       return;
     }
     setLoading(true);
@@ -48,13 +50,13 @@ function ResetPasswordContent() {
         <div className="mx-auto w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
           <CheckCircle2 className="w-7 h-7" />
         </div>
-        <h1 className="mt-5 text-xl font-bold">Password updated</h1>
+        <h1 className="mt-5 text-xl font-bold">{t.reset_success_title}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          You can now sign in with your new password.
+          {t.reset_success_desc}
         </p>
         <Link href="/login" className="block mt-6">
           <Button variant="gold" className="w-full">
-            Go to sign in
+            {t.reset_success_cta}
           </Button>
         </Link>
       </div>
@@ -63,13 +65,13 @@ function ResetPasswordContent() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold tracking-tight">Choose a new password</h1>
+      <h1 className="text-2xl font-bold tracking-tight">{t.reset_choose_new}</h1>
       <p className="mt-1.5 text-sm text-muted-foreground">
-        Make it at least 8 characters and unique.
+        {t.reset_choose_new_desc}
       </p>
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <Input
-          label="New password"
+          label={t.reset_password}
           type="password"
           required
           value={password}
@@ -77,7 +79,7 @@ function ResetPasswordContent() {
           placeholder="••••••••"
         />
         <Input
-          label="Confirm password"
+          label={t.reset_confirm_password}
           type="password"
           required
           value={confirm}
@@ -90,7 +92,7 @@ function ResetPasswordContent() {
           </div>
         )}
         <Button type="submit" variant="gold" className="w-full" size="lg" isLoading={loading}>
-          Reset password
+          {t.reset_button}
         </Button>
       </form>
     </>

@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import { Dialog } from './Dialog';
 import { Button } from './Button';
+import { useTranslation } from '@/lib/i18n';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -22,11 +23,12 @@ export function ConfirmDialog({
   onConfirm,
   title,
   description,
-  confirmLabel = 'Confirm',
+  confirmLabel,
   loading,
   destructive,
   icon,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation();
   return (
     <Dialog
       open={open}
@@ -37,14 +39,14 @@ export function ConfirmDialog({
       footer={
         <>
           <Button variant="ghost" onClick={onClose} disabled={loading}>
-            Cancel
+            {t.confirm_cancel}
           </Button>
           <Button
             variant={destructive ? 'destructive' : 'gold'}
             onClick={onConfirm}
             isLoading={loading}
           >
-            {confirmLabel}
+            {confirmLabel || t.confirm_confirm}
           </Button>
         </>
       }

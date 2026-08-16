@@ -7,8 +7,10 @@ import { CheckCircle2, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { api } from '@/lib/api/client';
 import { getErrorMessage } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 function VerifyContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const token = searchParams.get('token') || '';
   const [state, setState] = useState<'loading' | 'success' | 'error'>('loading');
@@ -31,7 +33,7 @@ function VerifyContent() {
     return (
       <div className="text-center py-8">
         <div className="mx-auto w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="mt-4 text-sm text-muted-foreground">Verifying your email…</p>
+        <p className="mt-4 text-sm text-muted-foreground">{t.verify_verifying}</p>
       </div>
     );
   }
@@ -43,13 +45,13 @@ function VerifyContent() {
           <div className="mx-auto w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
             <CheckCircle2 className="w-7 h-7" />
           </div>
-          <h1 className="mt-5 text-xl font-bold">Email verified</h1>
+          <h1 className="mt-5 text-xl font-bold">{t.verify_success_title}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Your account is now verified. You&apos;re all set to sell.
+            {t.verify_success_desc}
           </p>
           <Link href="/login" className="block mt-6">
             <Button variant="gold" className="w-full">
-              Go to sign in
+              {t.verify_go_sign_in}
             </Button>
           </Link>
         </>
@@ -58,11 +60,11 @@ function VerifyContent() {
           <div className="mx-auto w-14 h-14 rounded-2xl bg-red-500/10 text-red-400 flex items-center justify-center">
             <XCircle className="w-7 h-7" />
           </div>
-          <h1 className="mt-5 text-xl font-bold">Verification failed</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{message || 'The link may be invalid or expired.'}</p>
+          <h1 className="mt-5 text-xl font-bold">{t.verify_failed_title}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{message || t.verify_failed_desc}</p>
           <Link href="/login" className="block mt-6">
             <Button variant="outline" className="w-full">
-              Back to sign in
+              {t.verify_back_to_sign_in}
             </Button>
           </Link>
         </>

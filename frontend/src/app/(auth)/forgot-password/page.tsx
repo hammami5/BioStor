@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { api } from '@/lib/api/client';
 import { getErrorMessage } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
@@ -43,26 +45,25 @@ export default function ForgotPasswordPage() {
                 <div className="mx-auto w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
                   <MailCheck className="w-7 h-7" />
                 </div>
-                <h1 className="mt-5 text-xl font-bold">Check your inbox</h1>
+                <h1 className="mt-5 text-xl font-bold">{t.forgot_check_inbox}</h1>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  If an account exists for <span className="text-foreground">{email}</span>, we&apos;ve
-                  sent you a password reset link. It expires in 30 minutes.
+                  {t.forgot_check_inbox_desc}
                 </p>
                 <Link href="/login" className="block mt-6">
                   <Button variant="outline" className="w-full">
-                    Back to sign in
+                    {t.forgot_back_to_sign_in}
                   </Button>
                 </Link>
               </div>
             ) : (
               <>
-                <h1 className="text-2xl font-bold tracking-tight">Reset your password</h1>
+                <h1 className="text-2xl font-bold tracking-tight">{t.forgot_title}</h1>
                 <p className="mt-1.5 text-sm text-muted-foreground">
-                  Enter your email and we&apos;ll send you a reset link.
+                  {t.forgot_subtitle}
                 </p>
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                   <Input
-                    label="Email"
+                    label={t.forgot_email}
                     type="email"
                     required
                     value={email}
@@ -75,13 +76,13 @@ export default function ForgotPasswordPage() {
                     </div>
                   )}
                   <Button type="submit" variant="gold" className="w-full" size="lg" isLoading={loading}>
-                    Send reset link
+                    {t.forgot_button}
                   </Button>
                 </form>
                 <p className="mt-6 text-center text-sm text-muted-foreground">
-                  Remembered it?{' '}
+                  {t.forgot_remembered}{' '}
                   <Link href="/login" className="font-medium text-primary hover:underline">
-                    Sign in
+                    {t.forgot_sign_in}
                   </Link>
                 </p>
               </>

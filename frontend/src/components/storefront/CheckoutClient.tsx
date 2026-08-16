@@ -65,7 +65,7 @@ export function CheckoutClient({ storeSlug, storeName, settings, isLight }: Chec
 
   const formatCurrency = (amount: number) => {
     if (currency === 'TND') {
-      return `${amount.toFixed(2)} د.ت`;
+      return `${amount.toFixed(3)} د.ت`;
     }
     return formatMoney(amount, currency);
   };
@@ -74,7 +74,7 @@ export function CheckoutClient({ storeSlug, storeName, settings, isLight }: Chec
     e.preventDefault();
     if (items.length === 0) return;
     if (!name.trim() || !phone.trim() || !address.trim() || !city.trim()) {
-      setError('Please fill in your name, phone, and delivery address.');
+      setError(t.checkout_fill_required);
       return;
     }
     setError('');
@@ -98,7 +98,7 @@ export function CheckoutClient({ storeSlug, storeName, settings, isLight }: Chec
       clear();
       router.replace(`/store/${storeSlug}/checkout/success`);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong placing your order.');
+      setError(err instanceof Error ? err.message : t.checkout_order_error);
     } finally {
       setSubmitting(false);
     }

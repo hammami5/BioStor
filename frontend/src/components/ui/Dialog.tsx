@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface DialogProps {
   open: boolean;
@@ -15,6 +16,7 @@ interface DialogProps {
 }
 
 export function Dialog({ open, onClose, title, description, children, footer, size = 'md' }: DialogProps) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -59,7 +61,7 @@ export function Dialog({ open, onClose, title, description, children, footer, si
             <button
               onClick={onClose}
               className="p-1.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-              aria-label="Close"
+              aria-label={t.dialog_close}
             >
               <X className="w-5 h-5" />
             </button>

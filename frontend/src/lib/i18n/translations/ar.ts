@@ -558,4 +558,84 @@ export const ar = {
   city_djerba: 'جربة',
   city_zarzis: 'جرجيس',
   city_other: 'أخرى',
+  // Forgot Password
+  forgot_check_inbox: 'تحقق من بريدك الإلكتروني',
+  forgot_check_inbox_desc: 'إذا كان هناك حساب مرتبط ببريدك، أرسلنا لك رابط إعادة تعيين كلمة المرور. ينتهي صلاحيته خلال 30 دقيقة.',
+  forgot_back_to_sign_in: 'العودة إلى تسجيل الدخول',
+  forgot_remembered: 'تتذكر؟',
+  forgot_sign_in: 'تسجيل الدخول',
+  // Reset Password
+  reset_choose_new: 'اختر كلمة مرور جديدة',
+  reset_choose_new_desc: 'يجب أن تكون 8 أحرف على الأقل ومميزة.',
+  reset_password_min_error: 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.',
+  reset_passwords_no_match: 'كلمتا المرور غير متطابقتين.',
+  reset_success_title: 'تم تحديث كلمة المرور',
+  reset_success_desc: 'يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.',
+  reset_success_cta: 'الذهاب إلى تسجيل الدخول',
+  // Verify Email
+  verify_verifying: 'جاري التحقق من بريدك الإلكتروني…',
+  verify_success_title: 'تم التحقق من البريد الإلكتروني',
+  verify_success_desc: 'تم التحقق من حسابك. أنت الآن جاهز للبيع.',
+  verify_go_sign_in: 'الذهاب إلى تسجيل الدخول',
+  verify_failed_title: 'فشل التحقق',
+  verify_failed_desc: 'قد يكون الرابط غير صالح أو منتهي الصلاحية.',
+  verify_back_to_sign_in: 'العودة إلى تسجيل الدخول',
+  // Store Design Options
+  store_pill: 'دائري',
+  store_rounded: 'مستدير',
+  store_square: 'مربع',
+  store_dark: 'داكن',
+  store_light: 'فاتح',
+  store_logo_alt: 'شعار المتجر',
+  store_buy: 'شراء',
+  // Order Status Labels
+  order_status_new: 'جديد',
+  order_status_confirmed: 'مؤكد',
+  order_status_preparing: 'قيد التحضير',
+  order_status_shipped: 'تم الشحن',
+  order_status_delivered: 'تم التوصيل',
+  order_status_cancelled: 'ملغى',
+  // Plan Labels
+  plan_free: 'مجاني',
+  plan_pro: 'برو',
+  plan_business: 'بيزنس',
+  // Status Badges
+  status_active: 'نشط',
+  status_inactive: 'غير نشط',
+  status_out_of_stock: 'نفذ من المخزون',
+  status_low_stock: 'مخزون منخفض',
+  status_in_stock: 'في المخزون',
+  // Checkout
+  checkout_fill_required: 'يرجى ملء اسمك وهاتفك وعنوان التوصيل.',
+  checkout_order_error: 'حدث خطأ أثناء تقديم الطلب.',
+  // Product Detail
+  product_select_variant: 'يرجى اختيار',
+  product_save_pct: 'وفّر',
+  product_no_image: 'لا توجد صورة',
+  // Confirm Dialog
+  confirm_confirm: 'تأكيد',
+  confirm_cancel: 'إلغاء',
+  // Copy Button
+  copy_link: 'نسخ الرابط',
+  copy_copied: 'تم النسخ!',
+  copy_label: 'نسخ',
+  // Dialog
+  dialog_close: 'إغلاق',
+  // Toast
+  toast_dismiss: 'إغلاق',
+  // Image Upload
+  image_too_large: 'الصورة كبيرة جداً',
+  image_max_size: 'الحد الأقصى لحجم الملف 5 ميجابايت.',
+  image_upload_failed: 'فشل الرفع',
+  image_try_again: 'يرجى المحاولة مرة أخرى.',
+  image_cover: 'غلاف',
+  image_add: 'إضافة صورة',
+  // Pagination
+  pagination_showing: 'عرض',
+  pagination_to: '–',
+  pagination_of: 'من',
+  pagination_prev: 'الصفحة السابقة',
+  pagination_next: 'الصفحة التالية',
+  // Charts
+  chart_no_data: 'لا توجد بيانات متاحة',
 };

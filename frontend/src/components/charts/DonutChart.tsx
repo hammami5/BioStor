@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslation } from '@/lib/i18n';
 
 interface DonutChartProps {
   data: { label: string; value: number; color?: string }[];
@@ -19,6 +20,7 @@ export function DonutChart({
   centerLabel,
   centerValue,
 }: DonutChartProps) {
+  const { t } = useTranslation();
   const segments = useMemo(() => {
     const total = data.reduce((sum, d) => sum + d.value, 0);
     if (total === 0) return [];
@@ -44,7 +46,7 @@ export function DonutChart({
   if (segments.length === 0) {
     return (
       <div className="flex items-center justify-center text-sm text-muted-foreground" style={{ width: size, height: size }}>
-        No data
+        {t.chart_no_data}
       </div>
     );
   }

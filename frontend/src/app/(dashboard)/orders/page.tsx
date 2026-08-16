@@ -13,7 +13,7 @@ import { DataTable } from '@/components/ui/DataTable';
 import { useToast } from '@/components/ui/Toast';
 import { useTranslation } from '@/lib/i18n';
 import { debounce, formatDateTime, formatMoney, getErrorMessage } from '@/lib/utils';
-import { ORDER_STATUSES, ORDER_STATUS_LABELS } from '@/types';
+import { ORDER_STATUSES, ORDER_STATUS_I18N_KEYS } from '@/types';
 import type { Order } from '@/types';
 
 export default function OrdersPage() {
@@ -85,7 +85,7 @@ export default function OrdersPage() {
           className="w-40"
           options={[
             { value: '', label: t.orders_all },
-            ...ORDER_STATUSES.map((s) => ({ value: s, label: ORDER_STATUS_LABELS[s] })),
+            ...ORDER_STATUSES.map((s) => ({ value: s, label: t[ORDER_STATUS_I18N_KEYS[s] as keyof typeof t] })),
           ]}
         />
       </div>

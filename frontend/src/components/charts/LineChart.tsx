@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { formatCompactMoney } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 interface ChartDataPoint {
   label: string;
@@ -23,6 +24,7 @@ export function LineChart({
   showArea = true,
   valueFormatter,
 }: LineChartProps) {
+  const { t } = useTranslation();
   const { points, max, min } = useMemo(() => {
     const values = data.map((d) => d.value);
     const max = Math.max(...values, 1);
@@ -41,7 +43,7 @@ export function LineChart({
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center text-sm text-muted-foreground" style={{ height }}>
-        No data available
+        {t.chart_no_data}
       </div>
     );
   }

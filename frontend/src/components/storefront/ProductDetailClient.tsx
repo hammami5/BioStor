@@ -35,7 +35,7 @@ export function ProductDetailClient({
   const selectionError = useMemo(() => {
     for (const group of product.variant_groups) {
       if (!selected[group.name]) {
-        return `Please select ${group.name.toLowerCase()}`;
+        return `${t.product_select_variant} ${group.name.toLowerCase()}`;
       }
     }
     return null;
@@ -76,12 +76,12 @@ export function ProductDetailClient({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={resolveImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-zinc-600">No image</div>
+            <div className="w-full h-full flex items-center justify-center text-zinc-600">{t.product_no_image}</div>
           )}
           {product.discount_price && (
             <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-bold text-white"
               style={{ background: settings?.accent_color || '#d4af37' }}>
-              Save {Math.round((1 - product.discount_price / product.price) * 100)}%
+              {t.product_save_pct} {Math.round((1 - product.discount_price / product.price) * 100)}%
             </span>
           )}
         </div>

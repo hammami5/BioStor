@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface PaginationProps {
   page: number;
@@ -12,6 +13,7 @@ interface PaginationProps {
 }
 
 export function Pagination({ page, total, pageSize, onPageChange, className }: PaginationProps) {
+  const { t } = useTranslation();
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   if (totalPages <= 1) return null;
 
@@ -25,8 +27,8 @@ export function Pagination({ page, total, pageSize, onPageChange, className }: P
   return (
     <div className={cn('flex items-center justify-between gap-4', className)}>
       <p className="text-sm text-muted-foreground">
-        Showing <span className="text-foreground font-medium">{(page - 1) * pageSize + 1}</span>–
-        <span className="text-foreground font-medium">{Math.min(page * pageSize, total)}</span> of{' '}
+        {t.pagination_showing} <span className="text-foreground font-medium">{(page - 1) * pageSize + 1}</span>{t.pagination_to}
+        <span className="text-foreground font-medium">{Math.min(page * pageSize, total)}</span> {t.pagination_of}{' '}
         <span className="text-foreground font-medium">{total}</span>
       </p>
       <div className="flex items-center gap-1">
@@ -34,7 +36,7 @@ export function Pagination({ page, total, pageSize, onPageChange, className }: P
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
           className="p-1.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
-          aria-label="Previous page"
+          aria-label={t.pagination_prev}
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -62,7 +64,7 @@ export function Pagination({ page, total, pageSize, onPageChange, className }: P
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
           className="p-1.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
-          aria-label="Next page"
+          aria-label={t.pagination_next}
         >
           <ChevronRight className="w-4 h-4" />
         </button>

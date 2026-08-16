@@ -558,4 +558,84 @@ export const en = {
   city_djerba: 'Djerba',
   city_zarzis: 'Zarzis',
   city_other: 'Other',
+  // Forgot Password
+  forgot_check_inbox: 'Check your inbox',
+  forgot_check_inbox_desc: 'If an account exists for you, we\'ve sent you a password reset link. It expires in 30 minutes.',
+  forgot_back_to_sign_in: 'Back to sign in',
+  forgot_remembered: 'Remembered it?',
+  forgot_sign_in: 'Sign in',
+  // Reset Password
+  reset_choose_new: 'Choose a new password',
+  reset_choose_new_desc: 'Make it at least 8 characters and unique.',
+  reset_password_min_error: 'Password must be at least 8 characters.',
+  reset_passwords_no_match: 'Passwords do not match.',
+  reset_success_title: 'Password updated',
+  reset_success_desc: 'You can now sign in with your new password.',
+  reset_success_cta: 'Go to sign in',
+  // Verify Email
+  verify_verifying: 'Verifying your email…',
+  verify_success_title: 'Email verified',
+  verify_success_desc: 'Your account is now verified. You\'re all set to sell.',
+  verify_go_sign_in: 'Go to sign in',
+  verify_failed_title: 'Verification failed',
+  verify_failed_desc: 'The link may be invalid or expired.',
+  verify_back_to_sign_in: 'Back to sign in',
+  // Store Design Options
+  store_pill: 'Pill',
+  store_rounded: 'Rounded',
+  store_square: 'Square',
+  store_dark: 'Dark',
+  store_light: 'Light',
+  store_logo_alt: 'Store logo',
+  store_buy: 'Buy',
+  // Order Status Labels
+  order_status_new: 'New',
+  order_status_confirmed: 'Confirmed',
+  order_status_preparing: 'Preparing',
+  order_status_shipped: 'Shipped',
+  order_status_delivered: 'Delivered',
+  order_status_cancelled: 'Cancelled',
+  // Plan Labels
+  plan_free: 'Free',
+  plan_pro: 'Pro',
+  plan_business: 'Business',
+  // Status Badges
+  status_active: 'Active',
+  status_inactive: 'Inactive',
+  status_out_of_stock: 'Out of stock',
+  status_low_stock: 'Low',
+  status_in_stock: 'in stock',
+  // Checkout
+  checkout_fill_required: 'Please fill in your name, phone, and delivery address.',
+  checkout_order_error: 'Something went wrong placing your order.',
+  // Product Detail
+  product_select_variant: 'Please select',
+  product_save_pct: 'Save',
+  product_no_image: 'No image',
+  // Confirm Dialog
+  confirm_confirm: 'Confirm',
+  confirm_cancel: 'Cancel',
+  // Copy Button
+  copy_link: 'Copy link',
+  copy_copied: 'Copied!',
+  copy_label: 'Copy',
+  // Dialog
+  dialog_close: 'Close',
+  // Toast
+  toast_dismiss: 'Dismiss',
+  // Image Upload
+  image_too_large: 'Image too large',
+  image_max_size: 'Maximum file size is 5MB.',
+  image_upload_failed: 'Upload failed',
+  image_try_again: 'Please try again.',
+  image_cover: 'Cover',
+  image_add: 'Add image',
+  // Pagination
+  pagination_showing: 'Showing',
+  pagination_to: '–',
+  pagination_of: 'of',
+  pagination_prev: 'Previous page',
+  pagination_next: 'Next page',
+  // Charts
+  chart_no_data: 'No data available',
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslation } from '@/lib/i18n';
 
 interface BarChartProps {
   data: { label: string; value: number }[];
@@ -9,6 +10,7 @@ interface BarChartProps {
 }
 
 export function BarChart({ data, height = 220, currency }: BarChartProps) {
+  const { t } = useTranslation();
   const { bars, max } = useMemo(() => {
     const max = Math.max(...data.map((d) => d.value), 1);
     return { bars: data, max };
@@ -17,7 +19,7 @@ export function BarChart({ data, height = 220, currency }: BarChartProps) {
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center text-sm text-muted-foreground" style={{ height }}>
-        No data available
+        {t.chart_no_data}
       </div>
     );
   }

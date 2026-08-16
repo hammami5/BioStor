@@ -213,9 +213,9 @@ export default function StorePage() {
                     }))
                   }
                   options={[
-                    { value: 'pill', label: 'Pill' },
-                    { value: 'rounded', label: 'Rounded' },
-                    { value: 'square', label: 'Square' },
+                    { value: 'pill', label: t.store_pill },
+                    { value: 'rounded', label: t.store_rounded },
+                    { value: 'square', label: t.store_square },
                   ]}
                 />
               </div>
@@ -227,8 +227,8 @@ export default function StorePage() {
                     setStore((s) => ({ ...s, settings: { ...s.settings!, theme: e.target.value as 'light' | 'dark' } }))
                   }
                   options={[
-                    { value: 'dark', label: 'Dark' },
-                    { value: 'light', label: 'Light' },
+                    { value: 'dark', label: t.store_dark },
+                    { value: 'light', label: t.store_light },
                   ]}
                 />
               </div>
@@ -284,7 +284,7 @@ export default function StorePage() {
                 <div className="w-16 h-16 rounded-2xl overflow-hidden bg-muted/50 flex items-center justify-center">
                   {store.logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={store.logo} alt="Store logo" className="w-full h-full object-cover" />
+                    <img src={store.logo} alt={t.store_logo_alt} className="w-full h-full object-cover" />
                   ) : (
                     <StoreIcon className="w-6 h-6 text-muted-foreground/50" />
                   )}
@@ -366,6 +366,7 @@ export default function StorePage() {
 }
 
 function PhonePreview({ store, accent }: { store: Store; accent: string }) {
+  const { t } = useTranslation();
   const radius =
     store.settings?.button_style === 'pill'
       ? 'rounded-full'
@@ -415,7 +416,7 @@ function PhonePreview({ store, accent }: { store: Store; accent: string }) {
                 className={cn('px-3 py-1.5 text-[10px] font-bold text-white', radius)}
                 style={{ background: accent }}
               >
-                Buy
+                {t.store_buy}
               </button>
             </div>
           ))}

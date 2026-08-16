@@ -346,8 +346,23 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   cancelled: 'Cancelled',
 };
 
+export const ORDER_STATUS_I18N_KEYS: Record<OrderStatus, string> = {
+  new: 'order_status_new',
+  confirmed: 'order_status_confirmed',
+  preparing: 'order_status_preparing',
+  shipped: 'order_status_shipped',
+  delivered: 'order_status_delivered',
+  cancelled: 'order_status_cancelled',
+};
+
 export const PLAN_LABELS: Record<SubscriptionPlanCode, string> = {
   free: 'Free',
   pro: 'Pro',
   business: 'Business',
+};
+
+export const PLAN_I18N_KEYS: Record<SubscriptionPlanCode, string> = {
+  free: 'plan_free',
+  pro: 'plan_pro',
+  business: 'plan_business',
 };

@@ -558,4 +558,84 @@ export const fr = {
   city_djerba: 'Djerba',
   city_zarzis: 'Zarzis',
   city_other: 'Autre',
+  // Forgot Password
+  forgot_check_inbox: 'Vérifiez votre boîte mail',
+  forgot_check_inbox_desc: 'Si un compte existe pour vous, nous vous avons envoyé un lien de réinitialisation. Il expire dans 30 minutes.',
+  forgot_back_to_sign_in: 'Retour à la connexion',
+  forgot_remembered: 'Vous vous souvenez ?',
+  forgot_sign_in: 'Se connecter',
+  // Reset Password
+  reset_choose_new: 'Choisissez un nouveau mot de passe',
+  reset_choose_new_desc: 'Il doit faire au moins 8 caractères et être unique.',
+  reset_password_min_error: 'Le mot de passe doit faire au moins 8 caractères.',
+  reset_passwords_no_match: 'Les mots de passe ne correspondent pas.',
+  reset_success_title: 'Mot de passe mis à jour',
+  reset_success_desc: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.',
+  reset_success_cta: 'Aller à la connexion',
+  // Verify Email
+  verify_verifying: 'Vérification de votre e-mail…',
+  verify_success_title: 'E-mail vérifié',
+  verify_success_desc: 'Votre compte est maintenant vérifié. Vous êtes prêt à vendre.',
+  verify_go_sign_in: 'Aller à la connexion',
+  verify_failed_title: 'Échec de la vérification',
+  verify_failed_desc: 'Le lien peut être invalide ou expiré.',
+  verify_back_to_sign_in: 'Retour à la connexion',
+  // Store Design Options
+  store_pill: 'Pilule',
+  store_rounded: 'Arrondi',
+  store_square: 'Carré',
+  store_dark: 'Sombre',
+  store_light: 'Clair',
+  store_logo_alt: 'Logo de la boutique',
+  store_buy: 'Acheter',
+  // Order Status Labels
+  order_status_new: 'Nouveau',
+  order_status_confirmed: 'Confirmé',
+  order_status_preparing: 'En préparation',
+  order_status_shipped: 'Expédié',
+  order_status_delivered: 'Livré',
+  order_status_cancelled: 'Annulé',
+  // Plan Labels
+  plan_free: 'Gratuit',
+  plan_pro: 'Pro',
+  plan_business: 'Business',
+  // Status Badges
+  status_active: 'Actif',
+  status_inactive: 'Inactif',
+  status_out_of_stock: 'Rupture de stock',
+  status_low_stock: 'Stock bas',
+  status_in_stock: 'en stock',
+  // Checkout
+  checkout_fill_required: 'Veuillez remplir votre nom, téléphone et adresse de livraison.',
+  checkout_order_error: 'Une erreur s\'est produite lors de la commande.',
+  // Product Detail
+  product_select_variant: 'Veuillez sélectionner',
+  product_save_pct: 'Économisez',
+  product_no_image: 'Pas d\'image',
+  // Confirm Dialog
+  confirm_confirm: 'Confirmer',
+  confirm_cancel: 'Annuler',
+  // Copy Button
+  copy_link: 'Copier le lien',
+  copy_copied: 'Copié !',
+  copy_label: 'Copier',
+  // Dialog
+  dialog_close: 'Fermer',
+  // Toast
+  toast_dismiss: 'Fermer',
+  // Image Upload
+  image_too_large: 'Image trop grande',
+  image_max_size: 'La taille maximale est de 5 Mo.',
+  image_upload_failed: 'Échec de l\'envoi',
+  image_try_again: 'Veuillez réessayer.',
+  image_cover: 'Couverture',
+  image_add: 'Ajouter une image',
+  // Pagination
+  pagination_showing: 'Affichage de',
+  pagination_to: '–',
+  pagination_of: 'sur',
+  pagination_prev: 'Page précédente',
+  pagination_next: 'Page suivante',
+  // Charts
+  chart_no_data: 'Aucune donnée disponible',
 };

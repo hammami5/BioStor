@@ -12,7 +12,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
 import { useTranslation } from '@/lib/i18n';
 import { formatMoney, getErrorMessage } from '@/lib/utils';
-import { ORDER_STATUS_LABELS } from '@/types';
+import { ORDER_STATUS_I18N_KEYS } from '@/types';
 import type { AnalyticsOverview, TimePoint } from '@/types';
 
 const RANGES = [
@@ -119,7 +119,7 @@ export default function AnalyticsPage() {
               <CardContent>
                 <DonutChart
                   data={(summary?.status_breakdown || []).map((s) => ({
-                    label: ORDER_STATUS_LABELS[s.status as keyof typeof ORDER_STATUS_LABELS] || s.status,
+                    label: t[ORDER_STATUS_I18N_KEYS[s.status as keyof typeof ORDER_STATUS_I18N_KEYS] as keyof typeof t] || s.status,
                     value: s.count,
                   }))}
                   centerValue={String(summary?.total_orders || 0)}

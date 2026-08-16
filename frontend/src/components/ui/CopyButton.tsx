@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Check, Copy } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface CopyButtonProps {
   value: string;
@@ -9,6 +10,7 @@ interface CopyButtonProps {
 }
 
 export function CopyButton({ value, className }: CopyButtonProps) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -29,15 +31,15 @@ export function CopyButton({ value, className }: CopyButtonProps) {
   return (
     <button
       onClick={copy}
-      className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-      title="Copy link"
+      className={className || "inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"}
+      title={t.copy_link}
     >
       {copied ? (
         <Check className="w-3.5 h-3.5 text-emerald-400" />
       ) : (
         <Copy className="w-3.5 h-3.5" />
       )}
-      {copied ? 'Copied!' : 'Copy'}
+      {copied ? t.copy_copied : t.copy_label}
     </button>
   );
 }

@@ -5,6 +5,7 @@ import { ImagePlus, Loader2, Trash2 } from 'lucide-react';
 import { api } from '@/lib/api/client';
 import { useToast } from './Toast';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/lib/i18n';
 
 interface ImageUploadProps {
   images: string[];
@@ -18,6 +19,7 @@ export function ImageUpload({ images, onChange, max = 6, aspect = 'aspect-square
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const { error } = useToast();
+  const { t } = useTranslation();
 
   const handleFiles = async (files: FileList | null) => {
     if (!files) return;
@@ -30,7 +32,7 @@ export function ImageUpload({ images, onChange, max = 6, aspect = 'aspect-square
       const uploaded: string[] = [];
       for (const file of selected) {
         if (file.size > 5 * 1024 * 1024) {
-          error('Image too large', 'Maximum file size is 5MB.');
+          error(t.image_too_large, t.image_max_size);
           continue;
         }
         const result = await api.upload(file);
@@ -38,7 +40,7 @@ export function ImageUpload({ images, onChange, max = 6, aspect = 'aspect-square
       }
       onChange([...images, ...uploaded].slice(0, max));
     } catch {
-      error('Upload failed', 'Please try again.');
+      error(t.image_upload_failed, t.image_try_again);
     } finally {
       setUploading(false);
     }
@@ -50,18 +52,18 @@ export function ImageUpload({ images, onChange, max = 6, aspect = 'aspect-square
         {images.map((img, idx) => (
           <div key={img} className={cn('relative rounded-xl overflow-hidden border border-border group', aspect)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={img} alt={`Image ${idx + 1}`} className="w-full h-full object-cover" />
+            <img src={img} alt={`${t.common_actions} ${idx + 1}`} className="w-full h-full object-cover" />
             <button
               type="button"
               onClick={() => onChange(images.filter((_, i) => i !== idx))}
               className="absolute top-1.5 right-1.5 p-1.5 rounded-lg bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-              aria-label="Remove image"
+              aria-label={t.common_delete}
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
             {idx === 0 && (
               <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-black/70 text-white">
-                Cover
+                {t.image_cover}
               </span>
             )}
           </div>
@@ -81,7 +83,7 @@ export function ImageUpload({ images, onChange, max = 6, aspect = 'aspect-square
             ) : (
               <>
                 <ImagePlus className="w-5 h-5" />
-                <span className="text-xs font-medium">Add image</span>
+                <span className="text-xs font-medium">{t.image_add}</span>
               </>
             )}
           </button>

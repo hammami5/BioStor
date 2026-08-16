@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
 import { useTranslation } from '@/lib/i18n';
 import { cn, formatDateTime, formatMoney, getErrorMessage } from '@/lib/utils';
-import { ORDER_STATUSES, ORDER_STATUS_LABELS } from '@/types';
+import { ORDER_STATUSES, ORDER_STATUS_I18N_KEYS } from '@/types';
 import type { Order } from '@/types';
 
 export default function OrderDetailPage() {
@@ -50,7 +50,7 @@ export default function OrderDetailPage() {
     try {
       const updated = await api.updateOrderStatus(order!.id, status as Order['status']);
       setOrder(updated);
-      success(t.orders_update_status, `${ORDER_STATUS_LABELS[updated.status]}.`);
+      success(t.orders_update_status, `${t[ORDER_STATUS_I18N_KEYS[updated.status] as keyof typeof t]}.`);
     } catch (err) {
       error(t.common_error, getErrorMessage(err));
     } finally {
@@ -110,7 +110,7 @@ export default function OrderDetailPage() {
             value={order.status}
             onChange={(e) => changeStatus(e.target.value)}
             disabled={updatingStatus}
-            options={ORDER_STATUSES.map((s) => ({ value: s, label: ORDER_STATUS_LABELS[s] }))}
+            options={ORDER_STATUSES.map((s) => ({ value: s, label: t[ORDER_STATUS_I18N_KEYS[s] as keyof typeof t] }))}
           />
         </div>
       </div>
@@ -137,7 +137,7 @@ export default function OrderDetailPage() {
                       i <= currentStep ? 'text-primary' : 'text-muted-foreground'
                     )}
                   >
-                    {ORDER_STATUS_LABELS[s]}
+                    {t[ORDER_STATUS_I18N_KEYS[s] as keyof typeof t]}
                   </span>
                 </div>
                 {i < 4 && (

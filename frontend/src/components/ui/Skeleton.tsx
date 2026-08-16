@@ -38,7 +38,7 @@ interface PageLoaderProps {
   label?: string;
 }
 
-const PageLoader = ({ label = 'Loading...' }: PageLoaderProps) => (
+const PageLoader = ({ label }: PageLoaderProps) => (
   <div className="flex flex-col items-center justify-center py-24 gap-4">
     <Spinner size="lg" />
     <p className="text-sm text-muted-foreground">{label}</p>

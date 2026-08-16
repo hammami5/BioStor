@@ -535,6 +535,86 @@ export type TranslationKeys = {
   city_djerba: string;
   city_zarzis: string;
   city_other: string;
+  // Forgot Password
+  forgot_check_inbox: string;
+  forgot_check_inbox_desc: string;
+  forgot_back_to_sign_in: string;
+  forgot_remembered: string;
+  forgot_sign_in: string;
+  // Reset Password
+  reset_choose_new: string;
+  reset_choose_new_desc: string;
+  reset_password_min_error: string;
+  reset_passwords_no_match: string;
+  reset_success_title: string;
+  reset_success_desc: string;
+  reset_success_cta: string;
+  // Verify Email
+  verify_verifying: string;
+  verify_success_title: string;
+  verify_success_desc: string;
+  verify_go_sign_in: string;
+  verify_failed_title: string;
+  verify_failed_desc: string;
+  verify_back_to_sign_in: string;
+  // Store Design Options
+  store_pill: string;
+  store_rounded: string;
+  store_square: string;
+  store_dark: string;
+  store_light: string;
+  store_logo_alt: string;
+  store_buy: string;
+  // Order Status Labels
+  order_status_new: string;
+  order_status_confirmed: string;
+  order_status_preparing: string;
+  order_status_shipped: string;
+  order_status_delivered: string;
+  order_status_cancelled: string;
+  // Plan Labels
+  plan_free: string;
+  plan_pro: string;
+  plan_business: string;
+  // Status Badges
+  status_active: string;
+  status_inactive: string;
+  status_out_of_stock: string;
+  status_low_stock: string;
+  status_in_stock: string;
+  // Checkout
+  checkout_fill_required: string;
+  checkout_order_error: string;
+  // Product Detail
+  product_select_variant: string;
+  product_save_pct: string;
+  product_no_image: string;
+  // Confirm Dialog
+  confirm_confirm: string;
+  confirm_cancel: string;
+  // Copy Button
+  copy_link: string;
+  copy_copied: string;
+  copy_label: string;
+  // Dialog
+  dialog_close: string;
+  // Toast
+  toast_dismiss: string;
+  // Image Upload
+  image_too_large: string;
+  image_max_size: string;
+  image_upload_failed: string;
+  image_try_again: string;
+  image_cover: string;
+  image_add: string;
+  // Pagination
+  pagination_showing: string;
+  pagination_to: string;
+  pagination_of: string;
+  pagination_prev: string;
+  pagination_next: string;
+  // Charts
+  chart_no_data: string;
 };
 
 export type Language = 'en' | 'fr' | 'ar';

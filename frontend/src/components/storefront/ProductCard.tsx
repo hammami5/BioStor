@@ -30,7 +30,7 @@ export function ProductCard({ product, storeSlug, settings, isLight }: ProductCa
           <img src={resolveImageUrl(product.images[0])} alt={product.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-zinc-600 text-xs">
-            No image
+            {t.product_no_image}
           </div>
         )}
         {product.discount_price && (
