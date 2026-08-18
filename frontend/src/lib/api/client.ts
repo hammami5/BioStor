@@ -203,6 +203,11 @@ class ApiClient {
     return response.data;
   }
 
+  async updateStoreSlug(slug: string): Promise<Store> {
+    const response = await this.client.put('/store/me/slug', { slug });
+    return response.data;
+  }
+
   // ---- Products ----
   async listProducts(params: {
     search?: string;

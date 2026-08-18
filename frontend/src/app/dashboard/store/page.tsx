@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Palette, ImagePlus, Store as StoreIcon, ExternalLink } from 'lucide-react';
+import { Palette, ImagePlus, Store as StoreIcon, ExternalLink, Link2 } from 'lucide-react';
 import { api } from '@/lib/api/client';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea, Label } from '@/components/ui/Input';
@@ -11,7 +11,7 @@ import { Tabs, TabContent } from '@/components/ui/Tabs';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
 import { useTranslation } from '@/lib/i18n';
-import { cn, getErrorMessage, isValidHexColor } from '@/lib/utils';
+import { cn, getErrorMessage, isValidHexColor, SITE_URL } from '@/lib/utils';
 import type { Store } from '@/types';
 
 const ACCENT_COLORS = ['#d4af37', '#000000', '#8b5cf6', '#0ea5e9', '#10b981', '#ef4444', '#f97316', '#ec4899'];
@@ -50,11 +50,17 @@ export default function StorePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savingDesign, setSavingDesign] = useState(false);
+  const [slugValue, setSlugValue] = useState('');
+  const [savingSlug, setSavingSlug] = useState(false);
+  const [slugError, setSlugError] = useState('');
 
   useEffect(() => {
     api
       .getMyStore()
-      .then(setStore)
+      .then((s) => {
+        setStore(s);
+        setSlugValue(s.slug);
+      })
       .catch((err) => {
         error(t.common_error, getErrorMessage(err));
       })
@@ -113,6 +119,37 @@ export default function StorePage() {
       success(t.store_logo);
     } catch (err) {
       error(t.common_error, getErrorMessage(err));
+    }
+  };
+
+  const saveSlug = async () => {
+    const trimmed = slugValue.trim().toLowerCase();
+    if (!trimmed || trimmed.length < 3) {
+      setSlugError(t.slug_invalid);
+      return;
+    }
+    if (!/^[a-z0-9]([a-z0-9_-]*[a-z0-9])?$/.test(trimmed)) {
+      setSlugError(t.slug_invalid);
+      return;
+    }
+    setSavingSlug(true);
+    setSlugError('');
+    try {
+      const updated = await api.updateStoreSlug(trimmed);
+      setStore(updated);
+      setSlugValue(updated.slug);
+      success(t.slug_saved, t.slug_title);
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      if (msg.includes('already taken') || msg.includes('409')) {
+        setSlugError(t.slug_taken);
+      } else if (msg.includes('reserved')) {
+        setSlugError(t.slug_reserved);
+      } else {
+        setSlugError(t.slug_invalid);
+      }
+    } finally {
+      setSavingSlug(false);
     }
   };
 
@@ -307,6 +344,46 @@ export default function StorePage() {
             <div>
               <Label>{t.store_name}</Label>
               <Input value={store.store_name} disabled helperText={t.common_close} />
+            </div>
+            <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+              <div className="flex items-center gap-2 mb-2">
+                <Link2 className="w-4 h-4 text-primary" />
+                <Label className="font-semibold">{t.slug_title}</Label>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">{t.slug_description}</p>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground whitespace-nowrap hidden sm:inline">
+                  {SITE_URL}/store/
+                </span>
+                <Input
+                  value={slugValue}
+                  onChange={(e) => {
+                    setSlugValue(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''));
+                    setSlugError('');
+                  }}
+                  placeholder={t.slug_placeholder}
+                  className="flex-1 font-mono"
+                />
+                <Button
+                  type="button"
+                  variant="gold"
+                  size="sm"
+                  isLoading={savingSlug}
+                  onClick={saveSlug}
+                  disabled={slugValue === store.slug}
+                >
+                  {t.slug_save}
+                </Button>
+              </div>
+              {slugError && (
+                <p className="text-xs text-red-500 mt-1.5">{slugError}</p>
+              )}
+              <p className="text-xs text-muted-foreground mt-1.5">{t.slug_help}</p>
+              {slugValue && slugValue !== store.slug && (
+                <p className="text-xs text-primary mt-1.5">
+                  {t.slug_url_preview}: {SITE_URL}/store/{slugValue}
+                </p>
+              )}
             </div>
             <Input
               label={t.store_description}

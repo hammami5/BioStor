@@ -638,4 +638,29 @@ export const en = {
   pagination_next: 'Next page',
   // Charts
   chart_no_data: 'No data available',
+  // Bio Link Section
+  biolink_title: 'Your BioStor Link',
+  biolink_url_label: 'Store URL',
+  biolink_copy: 'Copy link',
+  biolink_copied: 'Link copied!',
+  biolink_open_store: 'Open store',
+  biolink_share: 'Share',
+  biolink_instagram_hint: 'Copy this link and paste it into your Instagram bio so customers can access your store.',
+  biolink_share_text: 'Visit my store on BioStor',
+  // Slug Settings
+  slug_title: 'Store URL',
+  slug_description: 'Customize your public store link.',
+  slug_label: 'Store slug',
+  slug_placeholder: 'your-store-name',
+  slug_save: 'Save URL',
+  slug_saved: 'URL updated successfully',
+  slug_taken: 'This URL is already taken.',
+  slug_invalid: 'Invalid URL format.',
+  slug_reserved: 'This URL is reserved.',
+  slug_url_preview: 'Your store URL',
+  slug_help: 'Lowercase letters, numbers, hyphens and underscores only. 3-50 characters.',
+  // Store Not Found
+  store_not_found_title: 'Store not found',
+  store_not_found_desc: 'This store does not exist or has been deactivated.',
+  store_not_found_back: 'Back to BioStor',
 };

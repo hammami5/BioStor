@@ -30,6 +30,19 @@ class StoreService:
         await self.store_repo.update(store)
         return store
 
+    async def update_slug(self, store: Store, new_slug: str) -> Store:
+        new_slug = new_slug.lower().strip()
+        if new_slug != store.slug:
+            exists = await self.store_repo.slug_exists(new_slug, exclude_id=store.id)
+            if exists:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=f'The slug "{new_slug}" is already taken.',
+                )
+        store.slug = new_slug
+        await self.store_repo.update(store)
+        return store
+
     async def update_settings(
         self, store: Store, data: StoreSettingsUpdateRequest
     ) -> Store:

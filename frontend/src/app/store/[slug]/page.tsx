@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { publicApi } from '@/lib/api';
-import { resolveAbsoluteUrl } from '@/lib/utils';
+import { resolveAbsoluteUrl, SITE_URL } from '@/lib/utils';
 import { CatalogClient } from '@/components/storefront/CatalogClient';
 
 interface PageProps {
@@ -14,17 +14,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const data = await publicApi.publicStore(slug);
     const image = resolveAbsoluteUrl(data.store.logo);
+    const canonical = `${SITE_URL}/store/${slug}`;
     return {
-      title: data.store.store_name,
-      description: data.store.description || undefined,
+      title: `${data.store.store_name} | BioStor`,
+      description: data.store.description || `Shop at ${data.store.store_name} on BioStor`,
       openGraph: {
         title: data.store.store_name,
-        description: data.store.description || undefined,
+        description: data.store.description || `Shop at ${data.store.store_name} on BioStor`,
+        url: canonical,
+        siteName: 'BioStor',
+        images: image ? [{ url: image, width: 1200, height: 630 }] : undefined,
+        type: 'website',
+        locale: 'en_US',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: data.store.store_name,
+        description: data.store.description || `Shop at ${data.store.store_name} on BioStor`,
         images: image ? [image] : undefined,
       },
+      alternates: { canonical },
     };
   } catch {
-    return { title: 'Storefront' };
+    return { title: 'Store Not Found | BioStor' };
   }
 }
 

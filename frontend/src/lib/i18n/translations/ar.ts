@@ -638,4 +638,29 @@ export const ar = {
   pagination_next: 'الصفحة التالية',
   // Charts
   chart_no_data: 'لا توجد بيانات متاحة',
+  // Bio Link Section
+  biolink_title: 'رابط متجرك',
+  biolink_url_label: 'رابط المتجر',
+  biolink_copy: 'نسخ الرابط',
+  biolink_copied: 'تم نسخ الرابط بنجاح!',
+  biolink_open_store: 'فتح المتجر',
+  biolink_share: 'مشاركة',
+  biolink_instagram_hint: 'انسخ الرابط وحطّو في Bio متاع Instagram باش الحرفاء يوصلوا لمتجرك.',
+  biolink_share_text: 'تفضلوا زوروا متجري على BioStor',
+  // Slug Settings
+  slug_title: 'رابط المتجر',
+  slug_description: 'خصّص الرابط العام لمتجرك.',
+  slug_label: 'المسار الفرعي للمتجر',
+  slug_placeholder: 'اسم-متجرك',
+  slug_save: 'حفظ الرابط',
+  slug_saved: 'تم تحديث الرابط بنجاح',
+  slug_taken: 'هذا الرابط مستخدم بالفعل.',
+  slug_invalid: 'تنسيق الرابط غير صالح.',
+  slug_reserved: 'هذا الرابط محجوز.',
+  slug_url_preview: 'رابط متجرك',
+  slug_help: 'أحرف صغيرة وأرقام وشرطات وشرطات سفلية فقط. 3 إلى 50 حرفاً.',
+  // Store Not Found
+  store_not_found_title: 'المتجر غير موجود',
+  store_not_found_desc: 'هذا المتجر غير موجود أو تم تعطيله.',
+  store_not_found_back: 'العودة إلى BioStor',
 };

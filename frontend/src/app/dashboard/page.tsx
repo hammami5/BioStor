@@ -21,7 +21,8 @@ import { LineChart } from '@/components/charts';
 import { OrderStatusBadge } from '@/components/ui/StatusBadge';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { formatMoney, formatDateTime, getErrorMessage } from '@/lib/utils';
-import type { DashboardOverview, Order, TimePoint } from '@/types';
+import { BioLinkSection } from '@/components/dashboard/BioLinkSection';
+import type { DashboardOverview, Order, TimePoint, Store } from '@/types';
 
 export default function DashboardPage() {
   const { error: toastError } = useToast();
@@ -30,21 +31,24 @@ export default function DashboardPage() {
   const [revenue, setRevenue] = useState<TimePoint[]>([]);
   const [orders, setOrders] = useState<TimePoint[]>([]);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [store, setStore] = useState<Store | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [ov, rev, ord, recent] = await Promise.all([
+        const [ov, rev, ord, recent, st] = await Promise.all([
           api.dashboardOverview(),
           api.revenueOverTime('30d'),
           api.ordersOverTime('30d'),
           api.listOrders({ page: 1, page_size: 6 }),
+          api.getMyStore(),
         ]);
         setOverview(ov);
         setRevenue(rev);
         setOrders(ord);
         setRecentOrders(recent.items);
+        setStore(st);
       } catch (err) {
         toastError(t.common_error, getErrorMessage(err));
       } finally {
@@ -74,6 +78,8 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {store && <BioLinkSection slug={store.slug} />}
+
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label={t.dashboard_total_revenue}

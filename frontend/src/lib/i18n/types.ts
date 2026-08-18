@@ -615,6 +615,31 @@ export type TranslationKeys = {
   pagination_next: string;
   // Charts
   chart_no_data: string;
+  // Bio Link Section
+  biolink_title: string;
+  biolink_url_label: string;
+  biolink_copy: string;
+  biolink_copied: string;
+  biolink_open_store: string;
+  biolink_share: string;
+  biolink_instagram_hint: string;
+  biolink_share_text: string;
+  // Slug Settings
+  slug_title: string;
+  slug_description: string;
+  slug_label: string;
+  slug_placeholder: string;
+  slug_save: string;
+  slug_saved: string;
+  slug_taken: string;
+  slug_invalid: string;
+  slug_reserved: string;
+  slug_url_preview: string;
+  slug_help: string;
+  // Store Not Found
+  store_not_found_title: string;
+  store_not_found_desc: string;
+  store_not_found_back: string;
 };
 
 export type Language = 'en' | 'fr' | 'ar';
